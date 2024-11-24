@@ -71,24 +71,29 @@ body {
 
 /* Điện thoại di động lớn */
 @media (max-width: 768px) {
-  #navBarContainer {
-    padding-left: 0;
-    padding-right: 0;
+  #navBarTags {
+    flex-direction: column;
+    align-items: center;
+    order: 1;
   }
 }
 
 /* Máy tính bảng */
 @media (max-width: 1024px) {
   #navBarContainer {
-    padding-left: 1em;
-    padding-right: 1em;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    justify-content: space-between !important;
+  }
+  #navBarTags {
+    gap: 4px !important;
   }
 }
 
 /* Máy tính để bàn nhỏ */
 @media (max-width: 1440px) {
   #navBarContainer {
-    padding-left: 2em;
-    padding-right: 2em;
+    padding-left: 2em !important;
+    padding-right: 2em !important;
   }
 }
