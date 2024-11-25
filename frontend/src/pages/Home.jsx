@@ -24,8 +24,8 @@ const Home = () => {
             cuong<span style={{ color: "var(--main-color)" }}>.blog</span>
           </h1>
           <p className="lead">
-            Hi, I'm Cuong! Welcome to my personal blog where I share my thoughts and experiences on manga, art, music,
-            technology, and more. Stay tuned for insightful articles and updates.
+            Hi, I&apos;m Cuong! Welcome to my personal blog where I share my thoughts and experiences on manga, art,
+            music, technology, and more. Stay tuned for insightful articles and updates.
           </p>
           <div className="d-grid gap-2 d-md-flex justify-content-md-start">
             <Button variant="contained" size="large" color="primary">
