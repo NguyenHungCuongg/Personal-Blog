@@ -28,6 +28,12 @@ const theme = createTheme({
               "0px 3px 1px -2px rgba(0,0,0,0.05), 0px 2px 2px 0px rgba(0,0,0,0.04), 0px 1px 5px 0px rgba(0,0,0,0.03)",
           },
         },
+        text: {
+          boxShadow: "none",
+          "&:hover": {
+            boxShadow: "none",
+          },
+        },
       },
     },
   },
