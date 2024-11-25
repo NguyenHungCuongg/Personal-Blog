@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import Blog from "./pages/Blog";
 import Navbar from "./components/Navbar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Footer from "./components/Footer";
 
 const theme = createTheme({
   palette: {
@@ -14,6 +15,20 @@ const theme = createTheme({
     },
     secondary: {
       main: "#f1ac43",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          boxShadow:
+            "0px 3px 1px -2px rgba(0,0,0,0.05), 0px 2px 2px 0px rgba(0,0,0,0.04), 0px 1px 5px 0px rgba(0,0,0,0.03)",
+          "&:hover": {
+            boxShadow:
+              "0px 3px 1px -2px rgba(0,0,0,0.05), 0px 2px 2px 0px rgba(0,0,0,0.04), 0px 1px 5px 0px rgba(0,0,0,0.03)",
+          },
+        },
+      },
     },
   },
 });
@@ -30,6 +45,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/blog" element={<Blog />} />
         </Routes>
+        <Footer />
       </ThemeProvider>
     </div>
   );
