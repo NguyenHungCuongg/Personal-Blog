@@ -26,3 +26,8 @@ body {
   background-color: var(--light-color);
   line-height: 1.6;
 }
+
+#contactInfoContainer p {
+  font-family: var(--content-font);
+  color: var(--dark-hover-color);
+}

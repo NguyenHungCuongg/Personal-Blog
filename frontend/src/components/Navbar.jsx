@@ -19,7 +19,6 @@ function Navbar() {
   const handleClick = () => {
     setChecked((prev) => !prev);
   };
-
   return (
     <header
       id="navBarContainer"
@@ -40,7 +39,6 @@ function Navbar() {
           cuong<span style={{ color: "var(--main-color)" }}>.blog</span>
         </a>
       </div>
-
       <ul
         id="navBarTags"
         className={`gap-4 nav col-12 col-md-auto mb-2 justify-content-center text-center mb-md-0 ${

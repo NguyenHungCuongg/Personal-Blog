@@ -34,6 +34,13 @@ const theme = createTheme({
             boxShadow: "none",
           },
         },
+        outlined: {
+          boxShadow: "none",
+          borderWidth: "1.6px", // Increase the border width
+          "&:hover": {
+            borderWidth: "1.6px", // Maintain the border width on hover
+          },
+        },
       },
     },
   },
