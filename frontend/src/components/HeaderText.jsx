@@ -2,7 +2,7 @@ import LogoText from "../components/LogoText";
 
 function HeaderText(Props) {
   return (
-    <div>
+    <div className={`${Props.className ? Props.className : ""}`}>
       <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">
         {Props.title}
         {Props.logo && <LogoText />}
