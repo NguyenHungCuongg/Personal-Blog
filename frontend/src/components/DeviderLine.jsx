@@ -7,7 +7,7 @@ function DeviderLine() {
       className="my-5"
       sx={{
         borderBottomWidth: "1px",
-        borderColor: "#615561",
+        borderColor: "var(--dark-hover-color)",
         borderBottomStyle: "solid",
       }}
     />

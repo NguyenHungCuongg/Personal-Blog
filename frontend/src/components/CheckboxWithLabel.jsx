@@ -10,7 +10,7 @@ function CheckboxWithLabel(Props) {
   return (
     <div>
       <Checkbox checked={checked} onChange={handleChange} inputProps={{ "aria-label": "controlled" }} />
-      <label>{Props.label}</label>
+      <label style={{ color: "var(--dark-hover-color)" }}>{Props.label}</label>
     </div>
   );
 }

@@ -17,13 +17,13 @@ function Contactform() {
       <div id="contactInfoContainer" className="d-flex flex-column mt-4 gap-2">
         <div className="d-flex align-items-cente gap-2">
           <LocalPhoneOutlinedIcon />
-          <p className="mb-0" style={{ fontFamily: "Lato", color: "#615561" }}>
+          <p className="mb-0" style={{ fontFamily: "var(--content-font)", color: "var(--dark-hover-color)" }}>
             +84 987647235
           </p>
         </div>
         <div className="d-flex align-items-center gap-2">
           <EmailOutlinedIcon />
-          <p className="mb-0" style={{ fontFamily: "Lato", color: "#615561" }}>
+          <p className="mb-0" style={{ fontFamily: "var(--content-font)", color: "var(--dark-hover-color)" }}>
             cuonghungnguyentop@gmail.com
           </p>
         </div>

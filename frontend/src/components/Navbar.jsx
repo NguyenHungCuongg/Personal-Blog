@@ -95,7 +95,7 @@ function Navbar() {
       </ul>
 
       <div className="col-md-3 text-end">
-        <Button variant="contained" size="large" color="primary">
+        <Button variant="contained" size="large" color="primary" href="/login">
           Login
           <LoginOutlinedIcon />
         </Button>
