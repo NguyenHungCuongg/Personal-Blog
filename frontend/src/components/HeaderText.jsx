@@ -2,12 +2,14 @@ import LogoText from "../components/LogoText";
 
 function HeaderText(Props) {
   return (
-    <div className={`${Props.containerClass ? Props.containerClass : ""}`}>
-      <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">
+    <div className={`${Props.containerClass ? Props.containerClass : ""}`} style={Props.containerStyle}>
+      <h1 className={`${Props.titleClass ? Props.titleClass : ""}`} style={Props.titleStyle}>
         {Props.title}
         {Props.logo && <LogoText />}
       </h1>
-      <p className="lead">{Props.description}</p>
+      <p className={`lead ${Props.descriptionClass ? Props.descriptionClass : ""}`} style={Props.descriptionStyle}>
+        {Props.description}
+      </p>
     </div>
   );
 }
