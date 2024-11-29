@@ -4,7 +4,7 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import TextField from "@mui/material/TextField";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function Contactform() {
+function ContactForm() {
   return (
     <div className="container rounded-4 shadow p-5 px-5">
       <form id="contactForm" className="d-flex justify-content-between flex-column gap-4">
@@ -32,4 +32,4 @@ function Contactform() {
   );
 }
 
-export default Contactform;
+export default ContactForm;

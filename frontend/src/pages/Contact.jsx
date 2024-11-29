@@ -1,6 +1,6 @@
 import { assets } from "../assets/assets";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import Contactform from "../components/Contactform";
+import ContactForm from "../components/ContactForm";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Contact() {
@@ -17,7 +17,7 @@ function Contact() {
           />
         </div>
         <div className="col-lg-5">
-          <Contactform />
+          <ContactForm />
         </div>
       </div>
     </div>
