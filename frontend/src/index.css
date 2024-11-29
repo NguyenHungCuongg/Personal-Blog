@@ -26,3 +26,12 @@ body {
   background-color: var(--light-color);
   line-height: 1.6;
 }
+
+[data-theme="dark"] {
+  --light-color: #131113 !important;
+  --dark-color: #ffffff !important;
+  --main-color: #8f2eb6 !important;
+  --secondary-color: #f1ac43 !important;
+  --dark-hover-color: #e5e3dc !important;
+  --grey-color: #615561 !important;
+}
