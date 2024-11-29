@@ -25,7 +25,7 @@ function Blog() {
       </div>
       <div
         id="blogSearchSection"
-        className={`d-flex row align-items-center ${isSmallScreen ? "flex-column gap-2 align-items-center" : ""}`}
+        className={`d-flex row align-items-center ${isSmallScreen ? "flex-column gap-2" : ""}`}
       >
         <div className={`${isSmallScreen ? "" : "col-8"}`}>
           <SearchBar />
