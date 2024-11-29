@@ -28,7 +28,7 @@ const Home = () => {
             descriptionClass="fs-5"
           />
           <div className="d-grid gap-2 d-md-flex justify-content-md-start">
-            <Button variant="contained" size="large" color="primary">
+            <Button variant="contained" size="large" color="primary" href="/blog">
               Discover
             </Button>
           </div>

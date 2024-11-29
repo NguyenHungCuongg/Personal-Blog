@@ -13,7 +13,7 @@ function Navbar() {
   const isSmallScreen = useMediaQuery("(max-width:768px)");
   React.useEffect(() => {
     if (!isSmallScreen) {
-      setChecked(false); // Mặc định checked = false khi màn hình lớn
+      setChecked(false);
     }
   }, [isSmallScreen]);
   const handleClick = () => {
