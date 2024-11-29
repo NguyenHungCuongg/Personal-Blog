@@ -1,6 +1,7 @@
-import useMediaQuery from "@mui/material/useMediaQuery";
 import { assets } from "../assets/assets";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Button from "@mui/material/Button";
+import HeaderText from "../components/HeaderText";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Home = () => {
@@ -18,15 +19,12 @@ const Home = () => {
           />
         </div>
         <div className="col-lg-7">
-          <h1 className="display-5 fw-bold text-body-emphasis lh-1 mb-3">
-            Welcome to my homepage
-            <br />
-            cuong<span style={{ color: "var(--main-color)" }}>.blog</span>
-          </h1>
-          <p className="lead">
-            Hi, I&apos;m Cuong! Welcome to my personal blog where I share my thoughts and experiences on manga, art,
-            music, technology, and more. Stay tuned for insightful articles and updates.
-          </p>
+          <HeaderText
+            title="Welcome to my homepage"
+            description="            Hi, I'm Cuong! Welcome to my personal blog where I share my thoughts and experiences on manga, art,
+            music, technology, and more. Stay tuned for insightful articles and updates."
+            logo={true}
+          />
           <div className="d-grid gap-2 d-md-flex justify-content-md-start">
             <Button variant="contained" size="large" color="primary">
               Discover
