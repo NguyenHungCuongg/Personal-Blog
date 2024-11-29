@@ -20,9 +20,41 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: var(--title-font);
+#footerContainer {
+  background-color: var(--grey-color);
+  font-size: small;
+}
+
+#bottomOfFooter {
+  color: var(--light-color);
+  background-color: var(--dark-color);
+}
+
+#bottomOfFooter a {
+  color: var(--light-color) !important;
+}
+
+#footerContainer #footerContent ul li a {
+  font-family: var(--title-font) !important;
   color: var(--dark-color) !important;
-  background-color: var(--light-color);
-  line-height: 1.6;
+}
+
+h5 {
+  font-weight: 700;
+  font-family: var(--content-font) !important;
+  color: var(--dark-hover-color) !important;
+}
+
+/*---------------Media---------------------*/
+
+/* Điện thoại di động lớn */
+@media (max-width: 768px) {
+}
+
+/* Máy tính bảng */
+@media (max-width: 1024px) {
+}
+
+/* Máy tính để bàn nhỏ */
+@media (max-width: 1440px) {
 }
