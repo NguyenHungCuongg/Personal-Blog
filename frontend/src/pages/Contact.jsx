@@ -1,6 +1,6 @@
 import { assets } from "../assets/assets";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import ContactForm from "../components/ContactForm";
+import ContactForm from "../components/Contactform";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Contact() {

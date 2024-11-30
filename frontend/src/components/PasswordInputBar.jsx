@@ -9,7 +9,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function PasswordInputBar() {
+function PasswordInputBar(Props) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -23,7 +23,7 @@ function PasswordInputBar() {
   };
   return (
     <FormControl variant="outlined">
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+      <InputLabel htmlFor="outlined-adornment-password">{Props.label}</InputLabel>
       <OutlinedInput
         id="outlined-adornment-password"
         type={showPassword ? "text" : "password"}
@@ -40,7 +40,7 @@ function PasswordInputBar() {
             </IconButton>
           </InputAdornment>
         }
-        label="Password"
+        label={Props.label}
       />
     </FormControl>
   );
