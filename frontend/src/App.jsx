@@ -4,10 +4,11 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Blog from "./pages/Blog";
+import Register from "./pages/Register";
+import ViewBlog from "./pages/ViewBlog";
 import Navbar from "./components/Navbar";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Footer from "./components/Footer";
-import Register from "./pages/Register";
 
 const theme = createTheme({
   palette: {
@@ -59,6 +60,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/blog/test" element={<ViewBlog />} />
         </Routes>
         <Footer />
       </ThemeProvider>
