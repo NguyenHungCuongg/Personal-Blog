@@ -7,6 +7,7 @@ import Blog from "./pages/Blog";
 import Register from "./pages/Register";
 import ViewBlog from "./pages/ViewBlog";
 import Navbar from "./components/Navbar";
+import CreateBlog from "./pages/CreateBlog";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Footer from "./components/Footer";
 
@@ -60,6 +61,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/createblog" element={<CreateBlog />} />
           <Route path="/blog/test" element={<ViewBlog />} />
         </Routes>
         <Footer />
