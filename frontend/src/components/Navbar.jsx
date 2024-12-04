@@ -30,7 +30,7 @@ function Navbar() {
           <MenuIcon />
         </Button>
       )}
-      <div className="col-md-3 mb-2 mb-md-0">
+      <div id="navBarLogoContainer" className="col-md-3 mb-2 mb-md-0">
         <a
           href="/"
           className="fs-3 d-inline-flex link-body-emphasis text-decoration-none align-items-center"
@@ -68,6 +68,16 @@ function Navbar() {
                 Contact
               </a>
             </li>
+            <div id="navBarButtons" className="col-md-3 text-end d-flex gap-2">
+              <Button variant="outlined" size="large" color="primary" href="/createblog">
+                New Post
+                <AddOutlinedIcon />
+              </Button>
+              <Button variant="contained" size="large" color="primary" href="/login">
+                Login
+                <LoginOutlinedIcon />
+              </Button>
+            </div>
           </Collapse>
         ) : (
           <>
@@ -94,17 +104,18 @@ function Navbar() {
           </>
         )}
       </ul>
-
-      <div className="col-md-3 text-end d-flex gap-2">
-        <Button variant="outlined" size="large" color="primary" href="/createblog">
-          New Post
-          <AddOutlinedIcon />
-        </Button>
-        <Button variant="contained" size="large" color="primary" href="/login">
-          Login
-          <LoginOutlinedIcon />
-        </Button>
-      </div>
+      {!isSmallScreen && (
+        <div id="navBarButtons" className="col-md-3 text-end d-flex gap-2">
+          <Button variant="outlined" size="large" color="primary" href="/createblog">
+            New Post
+            <AddOutlinedIcon />
+          </Button>
+          <Button variant="contained" size="large" color="primary" href="/login">
+            Login
+            <LoginOutlinedIcon />
+          </Button>
+        </div>
+      )}
     </header>
   );
 }

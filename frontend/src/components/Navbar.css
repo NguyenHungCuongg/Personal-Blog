@@ -66,6 +66,9 @@
 
 /* Điện thoại di động lớn */
 @media (max-width: 768px) {
+  #navBarLogoContainer {
+    order: -1;
+  }
   #navBarTags {
     flex-direction: column;
     align-items: center;
