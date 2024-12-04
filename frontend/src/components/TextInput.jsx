@@ -6,9 +6,9 @@ function TextInput(Props) {
       {Props.animatedLabel ? (
         <TextField fullWidth id="fullWidth" label={Props.label} />
       ) : (
-        <div>
-          <label>{Props.label}</label>
-          <TextField fullWidth id="fullWidth" />
+        <div className="d-flex flex-column gap-2">
+          <label className="fw-semibold fs-4">{Props.label}</label>
+          <TextField fullWidth id="fullWidth" placeholder={Props.placeholder} />
         </div>
       )}
     </div>

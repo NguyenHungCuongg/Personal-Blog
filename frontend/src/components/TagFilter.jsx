@@ -14,14 +14,14 @@ function TagFilter(Props) {
           sx={{ maxWidth: "auto" }}
         />
       ) : (
-        <div>
-          <label>{Props.label}</label>
+        <div className="d-flex flex-column gap-2">
+          <label className="fw-semibold fs-4">{Props.label}</label>
           <Autocomplete
             multiple
             id="multiple-limit-tags"
             options={blogTags}
             getOptionLabel={(option) => option.title}
-            renderInput={(params) => <TextField {...params} placeholder="Add more filters" />}
+            renderInput={(params) => <TextField {...params} placeholder={Props.placeholder} />}
             sx={{ maxWidth: "auto" }}
           />
         </div>
