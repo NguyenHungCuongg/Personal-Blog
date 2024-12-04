@@ -4,6 +4,7 @@ import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import Collapse from "@mui/material/Collapse";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
@@ -94,7 +95,11 @@ function Navbar() {
         )}
       </ul>
 
-      <div className="col-md-3 text-end">
+      <div className="col-md-3 text-end d-flex gap-2">
+        <Button variant="outlined" size="large" color="primary" href="/createblog">
+          New Post
+          <AddOutlinedIcon />
+        </Button>
         <Button variant="contained" size="large" color="primary" href="/login">
           Login
           <LoginOutlinedIcon />
