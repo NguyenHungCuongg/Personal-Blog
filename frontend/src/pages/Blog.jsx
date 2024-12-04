@@ -31,7 +31,7 @@ function Blog() {
           <SearchBar />
         </div>
         <div className={`${isSmallScreen ? "" : "col-4"}`}>
-          <TagFilter />
+          <TagFilter animatedLabel={true} placeholder="Add more filters" />
         </div>
       </div>
       <DeviderLine />
