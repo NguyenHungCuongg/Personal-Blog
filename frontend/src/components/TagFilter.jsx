@@ -1,16 +1,32 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
-function TagFilter() {
+function TagFilter(Props) {
   return (
-    <Autocomplete
-      multiple
-      id="multiple-limit-tags"
-      options={blogTags}
-      getOptionLabel={(option) => option.title}
-      renderInput={(params) => <TextField {...params} label="Topics" placeholder="Add more filters" />}
-      sx={{ maxWidth: "auto" }}
-    />
+    <div>
+      {Props.animatedLabel ? (
+        <Autocomplete
+          multiple
+          id="multiple-limit-tags"
+          options={blogTags}
+          getOptionLabel={(option) => option.title}
+          renderInput={(params) => <TextField {...params} label="Topics" placeholder="Add more filters" />}
+          sx={{ maxWidth: "auto" }}
+        />
+      ) : (
+        <div>
+          <label>{Props.label}</label>
+          <Autocomplete
+            multiple
+            id="multiple-limit-tags"
+            options={blogTags}
+            getOptionLabel={(option) => option.title}
+            renderInput={(params) => <TextField {...params} placeholder="Add more filters" />}
+            sx={{ maxWidth: "auto" }}
+          />
+        </div>
+      )}
+    </div>
   );
 }
 
