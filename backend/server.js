@@ -12,10 +12,10 @@ dotenv.config();
 //Khai báo express và cổng port
 const app = express();
 const port = process.env.PORT || 3000;
-const saltRounds = process.env.SALT_ROUNDS || 10;
+const saltRounds = parseInt(process.env.SALT_ROUNDS, 10) || 10;
 
 //Setup các middleware
-app.use(cors());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(
@@ -53,16 +53,15 @@ app.post("/register", async (req, res) => {
     //Kiểm tra xem email hoặc username đã tồn tại chưa
     const checkResult = await db.query("SELECT * FROM Users WHERE email = $1 OR username = $2", [email, username]);
     if (checkResult.rows.length > 0) {
-      res.status(400).send("Email or username already exists");
-      return;
+      return res.status(400).send("Email or username already exists");
     }
     //Nếu chưa tồn tại thì tiền hành xác thực và thêm vào database
     else {
-      const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS || 10));
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
 
       // Chèn thông tin user vào database
       const insertResult = await db.query(
-        "INSERT INTO Users (email, username, passwordhash) VALUES ($1, $2, $3) RETURNING *",
+        "INSERT INTO Users (email, username, password) VALUES ($1, $2, $3) RETURNING *",
         [email, username, hashedPassword]
       );
 
@@ -73,12 +72,13 @@ app.post("/register", async (req, res) => {
           console.log("Error logging in user:", err);
           return res.status(500).send("Error logging in user");
         } else {
-          return res.redirect("/");
+          return res.json({ success: true });
         }
       });
     }
   } catch (err) {
     console.log("Error registering user:", err);
+    return res.status(500).send("Error registering user");
   }
 });
 
@@ -94,7 +94,7 @@ app.post("/login", async (req, res, next) => {
         if (err) {
           return res.status(400).send("Error logging in user");
         } else {
-          return res.redirect("/");
+          return res.json({ success: true });
         }
       });
     }
@@ -102,14 +102,14 @@ app.post("/login", async (req, res, next) => {
 });
 
 passport.use(
-  new LocalStrategy({ usernameField: "email", passwordField: "passwordhash" }, async (email, passwordhash, done) => {
+  new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
     try {
       //Kiểm tra xem email hoặc username đã tồn tại chưa
       const result = await db.query("SELECT * FROM Users WHERE email = $1", [email]);
       //Nếu tồn tại thì kiểm tra password
       if (result.rows.length > 0) {
         const user = result.rows[0];
-        bcrypt.compare(passwordhash, user.passwordhash, (err, result) => {
+        bcrypt.compare(password, user.password, (err, result) => {
           if (err) {
             return done(err);
           } else if (result) {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import PasswordInputBar from "./PasswordInputBar";
@@ -8,6 +9,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function RegisterForm() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +29,9 @@ function RegisterForm() {
         password: password,
         rememberMe: rememberMe,
       });
-      console.log("User registered:", response.data);
+      if (response.data.success) {
+        navigate("/"); // Redirect về home page
+      }
     } catch (err) {
       console.log("Error registering user:", err);
     }
