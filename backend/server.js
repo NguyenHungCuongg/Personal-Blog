@@ -141,6 +141,19 @@ passport.deserializeUser((user, done) => {
 });
 
 //API lấy dữ liệu từ database
+app.get("/api/posts", async (req, res) => {
+  try {
+    const result = await db.query(
+      `SELECT Posts.*, Users.* 
+      FROM Posts
+      JOIN Users ON Posts.UserID = Users.UserID`
+    );
+    res.send(result.rows);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 //chạy server
 app.listen(port, () => {
