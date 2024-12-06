@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -6,6 +6,7 @@ import PasswordInputBar from "./PasswordInputBar";
 import CheckboxWithLabel from "./CheckboxWithLabel";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import axios from "axios";
+import AuthContext from "../context/AuthContext";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function LoginForm() {
@@ -13,7 +14,7 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-
+  const { setIsAuthenticated } = useContext(AuthContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -23,6 +24,7 @@ function LoginForm() {
         rememberMe: rememberMe,
       });
       if (response.data.success) {
+        setIsAuthenticated(true);
         navigate("/"); // Redirect về home page
       }
     } catch (err) {

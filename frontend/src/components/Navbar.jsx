@@ -1,4 +1,5 @@
 import * as React from "react";
+import AuthContext from "../context/AuthContext";
 import Button from "@mui/material/Button";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -20,6 +21,7 @@ function Navbar() {
   const handleClick = () => {
     setChecked((prev) => !prev);
   };
+  const { isAuthenticated } = React.useContext(AuthContext);
   return (
     <header
       id="navBarContainer"

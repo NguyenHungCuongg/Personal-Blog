@@ -140,7 +140,7 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-//API lấy dữ liệu từ database
+//API lấy dữ liệu posts từ database
 app.get("/api/posts", async (req, res) => {
   try {
     const result = await db.query(
@@ -152,6 +152,15 @@ app.get("/api/posts", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal Server Error");
+  }
+});
+
+//API kiểm tra xem user đã đăng nhập chưa
+app.get("/api/check-auth", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ isAuthenticated: true });
+  } else {
+    res.json({ isAuthenticated: false });
   }
 });
 

@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 import CreateBlog from "./pages/CreateBlog";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Footer from "./components/Footer";
+import { AuthProvider } from "./context/AuthContext";
 
 const theme = createTheme({
   palette: {
@@ -52,20 +53,22 @@ const theme = createTheme({
 function App() {
   return (
     <div>
-      <ThemeProvider theme={theme}>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/createblog" element={<CreateBlog />} />
-          <Route path="/blog/test" element={<ViewBlog />} />
-        </Routes>
-        <Footer />
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/createblog" element={<CreateBlog />} />
+            <Route path="/blog/test" element={<ViewBlog />} />
+          </Routes>
+          <Footer />
+        </ThemeProvider>
+      </AuthProvider>
     </div>
   );
 }
