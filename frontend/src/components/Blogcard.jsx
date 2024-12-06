@@ -11,14 +11,18 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function Blogcard() {
+function Blogcard(Props) {
+  const { post } = Props;
+  if (!post) {
+    return null;
+  }
   return (
     <Card>
       <CardHeader
         id="blogHeader"
         avatar={
           <Avatar sx={{ bgcolor: grey[500] }} aria-label="recipe">
-            UK
+            {post.Username ? post.Username[0] : "UK"}
           </Avatar>
         }
         action={
@@ -32,8 +36,8 @@ function Blogcard() {
             }}
           />
         }
-        title="Author Name"
-        subheader="Date"
+        title={post.Username}
+        subheader={new Date(post.PostCreatedAt).toLocaleDateString()}
         sx={{
           "& .MuiCardHeader-title": {
             fontFamily: "Montserrat",
@@ -45,13 +49,13 @@ function Blogcard() {
           },
         }}
       />
-      <CardMedia component="img" height="194" image={assets.defaultthumbnail} alt="Paella dish" />
+      <CardMedia component="img" height="194" image={post.BannerImageURL || assets.defaultthumbnail} alt={post.Title} />
       <CardContent>
         <Typography variant="h6" sx={{ fontFamily: "Montserrat", fontWeight: "500", color: "#131113" }}>
-          Title
+          {post.Title}
         </Typography>
         <Typography variant="body2" sx={{ fontFamily: "Lato", color: "#615561" }}>
-          Description
+          {post.Content}
         </Typography>
       </CardContent>
     </Card>
