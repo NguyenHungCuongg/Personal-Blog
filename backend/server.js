@@ -7,14 +7,14 @@ import bcrypt from "bcrypt";
 import session from "express-session";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
+dotenv.config();
 
 //Khai báo express và cổng port
 const app = express();
-const port = 3000;
-const saltRounds = 10;
+const port = process.env.PORT || 3000;
+const saltRounds = process.env.SALT_ROUNDS || 10;
 
 //Setup các middleware
-dotenv.config();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -58,25 +58,22 @@ app.post("/register", async (req, res) => {
     }
     //Nếu chưa tồn tại thì tiền hành xác thực và thêm vào database
     else {
-      bcrypt.hash(password, saltRounds, async (err, hash) => {
+      const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT_ROUNDS || 10));
+
+      // Chèn thông tin user vào database
+      const insertResult = await db.query(
+        "INSERT INTO Users (email, username, passwordhash) VALUES ($1, $2, $3) RETURNING *",
+        [email, username, hashedPassword]
+      );
+
+      // Lấy thông tin user vừa đăng ký
+      const user = insertResult.rows[0];
+      req.login(user, (err) => {
         if (err) {
-          console.log("Error hashing password:", err);
+          console.log("Error logging in user:", err);
+          return res.status(500).send("Error logging in user");
         } else {
-          const insertResult = await db.query(
-            "INSERT INTO Users (email, username, password) VALUES ($1, $2, $3) RETURNING *",
-            [email, username, hash]
-          );
-          res.status(200).send("User registered");
-          //Lấy thông tin user vừa đăng ký
-          const user = insertResult.rows[0];
-          req.login(user, (err) => {
-            if (err) {
-              console.log("Error logging in user:", err);
-            } else {
-              res.status(200).send(user);
-              res.redirect("/login");
-            }
-          });
+          return res.redirect("/");
         }
       });
     }
@@ -86,7 +83,7 @@ app.post("/register", async (req, res) => {
 });
 
 //API đăng nhập
-app.post("/login", async (req, res) => {
+app.post("/login", async (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       return res.status(400).send("Error logging in user");
@@ -97,22 +94,22 @@ app.post("/login", async (req, res) => {
         if (err) {
           return res.status(400).send("Error logging in user");
         } else {
-          return res.status(200).send("User logged in");
+          return res.redirect("/");
         }
       });
     }
-  });
+  })(req, res, next);
 });
 
 passport.use(
-  new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
+  new LocalStrategy({ usernameField: "email", passwordField: "passwordhash" }, async (email, passwordhash, done) => {
     try {
       //Kiểm tra xem email hoặc username đã tồn tại chưa
       const result = await db.query("SELECT * FROM Users WHERE email = $1", [email]);
       //Nếu tồn tại thì kiểm tra password
       if (result.rows.length > 0) {
         const user = result.rows[0];
-        bcrypt.compare(password, user.password, (err, result) => {
+        bcrypt.compare(passwordhash, user.passwordhash, (err, result) => {
           if (err) {
             return done(err);
           } else if (result) {
