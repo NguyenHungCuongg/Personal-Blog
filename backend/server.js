@@ -84,14 +84,18 @@ app.post("/register", async (req, res) => {
 
 //API đăng nhập
 app.post("/login", async (req, res, next) => {
+  console.log("Received login request:", req.body); // Debugging log
   passport.authenticate("local", (err, user, info) => {
     if (err) {
+      console.log("Error logging in user:", err); // Debugging log
       return res.status(400).send("Error logging in user");
     } else if (!user) {
+      console.log("User not found"); // Debugging log
       return res.status(400).send("User not found");
     } else {
       req.login(user, (err) => {
         if (err) {
+          console.log("Error logging in user:", err); // Debugging log
           return res.status(400).send("Error logging in user");
         } else {
           return res.json({ success: true });
@@ -106,24 +110,23 @@ passport.use(
     try {
       //Kiểm tra xem email hoặc username đã tồn tại chưa
       const result = await db.query("SELECT * FROM Users WHERE email = $1", [email]);
+      const user = result.rows[0];
+      //Nếu không tồn tại thì trả về thông báo
+      if (!user) {
+        console.log("User not found"); // Debugging log
+        return done(null, false);
+      }
       //Nếu tồn tại thì kiểm tra password
-      if (result.rows.length > 0) {
-        const user = result.rows[0];
-        bcrypt.compare(password, user.password, (err, result) => {
-          if (err) {
-            return done(err);
-          } else if (result) {
-            return done(null, user);
-          } else {
-            return done(null, false);
-          }
-        });
-        //Nếu không tồn tại thì trả về thông báo
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch) {
+        return done(null, user);
       } else {
-        res.send("User not found");
+        console.log("Password incorrect"); // Debugging log
+        return done(null, false);
       }
     } catch (err) {
       console.log("Error logging in user:", err);
+      return done(err);
     }
   })
 );

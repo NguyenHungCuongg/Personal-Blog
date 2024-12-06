@@ -27,6 +27,8 @@ function PasswordInputBar(Props) {
       <OutlinedInput
         id="outlined-adornment-password"
         type={showPassword ? "text" : "password"}
+        value={Props.value}
+        onChange={Props.onChange}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
