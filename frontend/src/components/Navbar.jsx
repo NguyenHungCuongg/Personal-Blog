@@ -6,11 +6,29 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Collapse from "@mui/material/Collapse";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import Avatar from "@mui/material/Avatar";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+
+import Tooltip from "@mui/material/Tooltip";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
 
+const settings = ["Logout"];
+
 function Navbar() {
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
   const [checked, setChecked] = React.useState(false);
   const isSmallScreen = useMediaQuery("(max-width:768px)");
   React.useEffect(() => {
@@ -71,14 +89,46 @@ function Navbar() {
               </a>
             </li>
             <div id="navBarButtons" className="col-md-3 text-end d-flex gap-2">
-              <Button variant="outlined" size="large" color="primary" href="/createblog">
-                New Post
-                <AddOutlinedIcon />
-              </Button>
-              <Button variant="contained" size="large" color="primary" href="/login">
-                Login
-                <LoginOutlinedIcon />
-              </Button>
+              {isAuthenticated ? (
+                <div className="d-flex gap-2 flex-column">
+                  <Tooltip title="Open settings">
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar sx={{ bgcolor: "var(--main-color)" }}>H</Avatar>
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={handleCloseUserMenu}
+                  >
+                    {settings.map((setting) => (
+                      <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                        <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                  <Button variant="outlined" size="large" color="primary" href="/createblog">
+                    New Post
+                    <AddOutlinedIcon />
+                  </Button>
+                </div>
+              ) : (
+                <Button variant="contained" size="large" color="primary" href="/login">
+                  Login
+                  <LoginOutlinedIcon />
+                </Button>
+              )}
             </div>
           </Collapse>
         ) : (
@@ -107,15 +157,47 @@ function Navbar() {
         )}
       </ul>
       {!isSmallScreen && (
-        <div id="navBarButtons" className="col-md-3 text-end d-flex gap-2">
-          <Button variant="outlined" size="large" color="primary" href="/createblog">
-            New Post
-            <AddOutlinedIcon />
-          </Button>
-          <Button variant="contained" size="large" color="primary" href="/login">
-            Login
-            <LoginOutlinedIcon />
-          </Button>
+        <div id="navBarButtons" className="col-md-3 text-end d-flex gap-2 justify-content-end">
+          {isAuthenticated ? (
+            <div className="d-flex gap-2">
+              <Button variant="outlined" size="large" color="primary" href="/createblog">
+                New Post
+                <AddOutlinedIcon />
+              </Button>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar sx={{ bgcolor: "var(--main-color)" }}>H</Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </div>
+          ) : (
+            <Button variant="contained" size="large" color="primary" href="/login">
+              Login
+              <LoginOutlinedIcon />
+            </Button>
+          )}
         </div>
       )}
     </header>
