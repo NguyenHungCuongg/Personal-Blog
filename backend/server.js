@@ -164,6 +164,26 @@ app.get("/api/check-auth", (req, res) => {
   }
 });
 
+//API đăng xuất
+// API đăng xuất
+app.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      console.log("Error logging out:", err);
+      return res.status(500).send("Error logging out");
+    }
+    req.session.destroy((err) => {
+      if (err) {
+        console.log("Error destroying session:", err);
+        return res.status(500).send("Error destroying session");
+      }
+      //Xóa session cookie
+      res.clearCookie("connect.sid");
+      return res.json({ success: true });
+    });
+  });
+});
+
 //chạy server
 app.listen(port, () => {
   console.log("Server is listening on port 3000");

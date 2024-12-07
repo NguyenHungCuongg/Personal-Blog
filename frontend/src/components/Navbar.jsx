@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import Button from "@mui/material/Button";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
@@ -21,6 +22,8 @@ import "./Navbar.css";
 const settings = ["Logout"];
 
 function Navbar() {
+  const navigate = useNavigate();
+  const { isAuthenticated, setIsAuthenticated } = React.useContext(AuthContext);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenUserMenu = (event) => {
@@ -28,7 +31,11 @@ function Navbar() {
   };
   const handleCloseUserMenu = async () => {
     try {
-      await axios.get("http://localhost:3000/logout");
+      const response = await axios.get("http://localhost:3000/logout");
+      if (response.data.success) {
+        setIsAuthenticated(false);
+        navigate("/");
+      }
     } catch (err) {
       console.log("Error logging out user:", err);
     }
@@ -45,7 +52,6 @@ function Navbar() {
   const handleClick = () => {
     setChecked((prev) => !prev);
   };
-  const { isAuthenticated } = React.useContext(AuthContext);
   return (
     <header
       id="navBarContainer"
