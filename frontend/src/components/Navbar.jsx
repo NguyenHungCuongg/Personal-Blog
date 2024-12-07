@@ -9,11 +9,12 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import Avatar from "@mui/material/Avatar";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
 
-import Tooltip from "@mui/material/Tooltip";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
 
@@ -25,7 +26,12 @@ function Navbar() {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = async () => {
+    try {
+      await axios.get("http://localhost:3000/logout");
+    } catch (err) {
+      console.log("Error logging out user:", err);
+    }
     setAnchorElUser(null);
   };
 
@@ -91,23 +97,21 @@ function Navbar() {
             <div id="navBarButtons" className="col-md-3 text-end d-flex gap-2">
               {isAuthenticated ? (
                 <div className="d-flex gap-2 flex-column">
-                  <Tooltip title="Open settings">
-                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar sx={{ bgcolor: "var(--main-color)" }}>H</Avatar>
-                    </IconButton>
-                  </Tooltip>
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} disableRipple>
+                    <Avatar sx={{ bgcolor: "var(--main-color)" }}>H</Avatar>
+                  </IconButton>
                   <Menu
                     sx={{ mt: "45px" }}
                     id="menu-appbar"
                     anchorEl={anchorElUser}
                     anchorOrigin={{
                       vertical: "top",
-                      horizontal: "right",
+                      horizontal: "center",
                     }}
                     keepMounted
                     transformOrigin={{
                       vertical: "top",
-                      horizontal: "right",
+                      horizontal: "center",
                     }}
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
@@ -164,23 +168,21 @@ function Navbar() {
                 New Post
                 <AddOutlinedIcon />
               </Button>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar sx={{ bgcolor: "var(--main-color)" }}>H</Avatar>
-                </IconButton>
-              </Tooltip>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar sx={{ bgcolor: "var(--main-color)" }}>H</Avatar>
+              </IconButton>
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
                   vertical: "top",
-                  horizontal: "right",
+                  horizontal: "center",
                 }}
                 keepMounted
                 transformOrigin={{
                   vertical: "top",
-                  horizontal: "right",
+                  horizontal: "center",
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
