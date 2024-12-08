@@ -5,19 +5,34 @@ import axios from "axios";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authState, setAuthState] = useState({
+    isAuthenticated: false,
+    user: null,
+    loading: true,
+  });
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/check-auth");
-        setIsAuthenticated(response.data.isAuthenticated);
+        const response = await axios.get("http://localhost:3000/api/check-auth", { withCredentials: true });
+        setAuthState({
+          isAuthenticated: response.data.isAuthenticated,
+          user: response.data.user,
+          loading: false,
+        });
       } catch (error) {
         console.error("Error checking authentication", error);
+        setAuthState({
+          isAuthenticated: false,
+          user: null,
+          loading: false,
+        });
       }
     };
     checkAuth();
   }, []);
-  return <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>{children}</AuthContext.Provider>;
+
+  return <AuthContext.Provider value={{ ...authState, setAuthState }}>{children}</AuthContext.Provider>;
 };
 
 AuthProvider.propTypes = {

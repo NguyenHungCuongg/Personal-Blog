@@ -5,6 +5,7 @@ import cors from "cors";
 import pg from "pg";
 import bcrypt from "bcrypt";
 import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 dotenv.config();
@@ -13,20 +14,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 const saltRounds = parseInt(process.env.SALT_ROUNDS, 10) || 10;
-
-//Setup các middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
+const pgSession = connectPgSimple(session);
 
 //Kết nối với database
 const db = new pg.Client({
@@ -44,8 +32,78 @@ db.connect((err) => {
   }
 });
 
+//Setup các middleware
+app.use(cors({ origin: "http://localhost:5173", credentials: true })); //origin: "http://localhost:5173" là domain của frontend
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(
+  session({
+    store: new pgSession({
+      pool: db, // Use existing database connection pool
+    }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false, // Change to false to avoid creating sessions for unauthenticated users
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000, // 1 ngày
+      secure: false, // Để `false` khi phát triển local (hoặc true nếu sử dụng HTTPS)
+    },
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+//Serialize và deserialize user
+passport.serializeUser((user, done) => {
+  console.log("Serialized user ID:", user.userid); // Debugging log
+  done(null, user.userid); // Lưu user.userid vào session
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const result = await db.query("SELECT * FROM Users WHERE userid = $1", [id]);
+    if (result.rows.length > 0) {
+      const user = result.rows[0];
+      console.log("Deserialized user:", user); // Debugging log
+      done(null, user); // Trả về đối tượng user đầy đủ
+    } else {
+      console.log("User not found during deserialization"); // Debugging log
+      done(null, false); // Không tìm thấy user
+    }
+  } catch (err) {
+    console.log("Error in deserialization:", err); // Debugging log
+    done(err, null);
+  }
+});
+
+passport.use(
+  new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
+    try {
+      //Kiểm tra xem email hoặc username đã tồn tại chưa
+      const result = await db.query("SELECT * FROM Users WHERE email = $1", [email]);
+      const user = result.rows[0];
+      //Nếu không tồn tại thì trả về thông báo
+      if (!user) {
+        console.log("User not found"); // Debugging log
+        return done(null, false);
+      }
+      //Nếu tồn tại thì kiểm tra password
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch) {
+        return done(null, user);
+      } else {
+        console.log("Password incorrect"); // Debugging log
+        return done(null, false);
+      }
+    } catch (err) {
+      console.log("Error logging in user:", err);
+      return done(err);
+    }
+  })
+);
+
 //API đăng ký, tạo tài khoản
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
   const email = req.body.email;
   const username = req.body.username;
   const password = req.body.password;
@@ -83,12 +141,12 @@ app.post("/register", async (req, res) => {
 });
 
 //API đăng nhập
-app.post("/login", async (req, res, next) => {
+app.post("/api/login", async (req, res, next) => {
   console.log("Received login request:", req.body); // Debugging log
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       console.log("Error logging in user:", err); // Debugging log
-      return res.status(400).send("Error logging in user");
+      return res.status(500).send("Error logging in user");
     } else if (!user) {
       console.log("User not found"); // Debugging log
       return res.status(400).send("User not found");
@@ -96,48 +154,14 @@ app.post("/login", async (req, res, next) => {
       req.login(user, (err) => {
         if (err) {
           console.log("Error logging in user:", err); // Debugging log
-          return res.status(400).send("Error logging in user");
+          return res.status(500).send("Error logging in user");
         } else {
-          return res.json({ success: true });
+          console.log("User logged in successfully:", user); // Debugging log
+          return res.json({ success: true, user });
         }
       });
     }
   })(req, res, next);
-});
-
-passport.use(
-  new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
-    try {
-      //Kiểm tra xem email hoặc username đã tồn tại chưa
-      const result = await db.query("SELECT * FROM Users WHERE email = $1", [email]);
-      const user = result.rows[0];
-      //Nếu không tồn tại thì trả về thông báo
-      if (!user) {
-        console.log("User not found"); // Debugging log
-        return done(null, false);
-      }
-      //Nếu tồn tại thì kiểm tra password
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (isMatch) {
-        return done(null, user);
-      } else {
-        console.log("Password incorrect"); // Debugging log
-        return done(null, false);
-      }
-    } catch (err) {
-      console.log("Error logging in user:", err);
-      return done(err);
-    }
-  })
-);
-
-//Serialize và deserialize user
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
 });
 
 //API lấy dữ liệu posts từ database
@@ -157,14 +181,20 @@ app.get("/api/posts", async (req, res) => {
 
 //API kiểm tra xem user đã đăng nhập chưa
 app.get("/api/check-auth", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json({ isAuthenticated: true });
-  } else {
-    res.json({ isAuthenticated: false });
+  console.log("Session data:", req.session); // Kiểm tra session
+  console.log("User data:", req.user); // Kiểm tra user
+  try {
+    if (req.isAuthenticated()) {
+      res.json({ isAuthenticated: true, user: req.user });
+    } else {
+      res.json({ isAuthenticated: false });
+    }
+  } catch (error) {
+    console.log("Error checking authentication:", error);
+    res.status(500).json({ isAuthenticated: false, error: "Internal Server Error" });
   }
 });
 
-//API đăng xuất
 // API đăng xuất
 app.get("/logout", (req, res) => {
   req.logout((err) => {
@@ -177,8 +207,9 @@ app.get("/logout", (req, res) => {
         console.log("Error destroying session:", err);
         return res.status(500).send("Error destroying session");
       }
-      //Xóa session cookie
-      res.clearCookie("connect.sid");
+      // Xóa session cookie
+      res.clearCookie("connect.sid", { path: "/", domain: "localhost" });
+      console.log("Session destroyed successfully");
       return res.json({ success: true });
     });
   });

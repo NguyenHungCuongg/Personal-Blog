@@ -14,18 +14,23 @@ function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const { setIsAuthenticated } = useContext(AuthContext);
+  const { setAuthState } = useContext(AuthContext);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/login", {
-        email: email,
-        password: password,
-        rememberMe: rememberMe,
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/login",
+        {
+          email: email,
+          password: password,
+          rememberMe: rememberMe,
+        },
+        { withCredentials: true }
+      );
       if (response.data.success) {
-        setIsAuthenticated(true);
-        navigate("/"); // Redirect về home page
+        setAuthState({ isAuthenticated: true, user: response.data.user, loading: false });
+        navigate("/"); // Redirect to home page
       }
     } catch (err) {
       console.log("Error logging in user:", err);

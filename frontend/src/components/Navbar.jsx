@@ -23,17 +23,20 @@ const settings = ["Logout"];
 
 function Navbar() {
   const navigate = useNavigate();
-  const { isAuthenticated, setIsAuthenticated } = React.useContext(AuthContext);
+  const { isAuthenticated, user, loading, setAuthState } = React.useContext(AuthContext);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
   const handleCloseUserMenu = async () => {
+    setAnchorElUser(null);
+  };
+  const handleLogout = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/logout");
+      const response = await axios.get("http://localhost:3000/logout", { withCredentials: true });
       if (response.data.success) {
-        setIsAuthenticated(false);
+        setAuthState({ isAuthenticated: false, user: null, loading: false });
         navigate("/");
       }
     } catch (err) {
@@ -52,6 +55,13 @@ function Navbar() {
   const handleClick = () => {
     setChecked((prev) => !prev);
   };
+
+  //Nếu đang xác thực thì không component nào được render
+  if (loading) {
+    return null;
+  }
+
+  console.log("Navbar state:", { isAuthenticated, loading }); //debugging log
   return (
     <header
       id="navBarContainer"
@@ -104,7 +114,7 @@ function Navbar() {
               {isAuthenticated ? (
                 <div className="d-flex gap-2 flex-column">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} disableRipple>
-                    <Avatar sx={{ bgcolor: "var(--main-color)" }}>H</Avatar>
+                    <Avatar sx={{ bgcolor: "var(--main-color)" }}>{user.username[0]}</Avatar>
                   </IconButton>
                   <Menu
                     sx={{ mt: "45px" }}
@@ -124,7 +134,9 @@ function Navbar() {
                   >
                     {settings.map((setting) => (
                       <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
+                        <Typography onClick={handleLogout} sx={{ textAlign: "center" }}>
+                          {setting}
+                        </Typography>
                       </MenuItem>
                     ))}
                   </Menu>
@@ -175,7 +187,7 @@ function Navbar() {
                 <AddOutlinedIcon />
               </Button>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ bgcolor: "var(--main-color)" }}>H</Avatar>
+                <Avatar sx={{ bgcolor: "var(--main-color)" }}>{user.username[0]}</Avatar>
               </IconButton>
               <Menu
                 sx={{ mt: "45px" }}
@@ -195,7 +207,9 @@ function Navbar() {
               >
                 {settings.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography sx={{ textAlign: "center" }}>{setting}</Typography>
+                    <Typography onClick={handleLogout} sx={{ textAlign: "center" }}>
+                      {setting}
+                    </Typography>
                   </MenuItem>
                 ))}
               </Menu>
