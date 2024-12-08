@@ -13,11 +13,25 @@ function LoginForm() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const { setAuthState } = useContext(AuthContext);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //Trường hợp nếu email hoặc password không được nhập
+    if (email.trim() === "") {
+      setEmailError(true);
+    }
+
+    if (password.trim() === "") {
+      setPasswordError(true);
+    }
+    if (email.trim() === "" || password.trim() === "") {
+      return;
+    }
+    //Trường hợp nếu các input hợp lệ
     try {
       const response = await axios.post(
         "http://localhost:3000/api/login",
@@ -43,13 +57,26 @@ function LoginForm() {
         <AccountCircleOutlinedIcon style={{ fontSize: "5rem", color: "var(--main-color)", margin: "auto" }} />
         <h3 className="fs-1 fw-bold text-center">Login</h3>
         <TextField
-          id="outlined-basic"
+          error={emailError}
+          id={emailError ? "outlined-error" : "outlined-basic"}
           label="Email"
           variant="outlined"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setEmailError(false);
+          }}
+          helperText={emailError ? "Please enter your email" : ""}
         />
-        <PasswordInputBar label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <PasswordInputBar
+          error={passwordError}
+          label="Password"
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setPasswordError(false);
+          }}
+        />
         <CheckboxWithLabel label="Remember me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
         <Button variant="contained" type="submit">
           Login

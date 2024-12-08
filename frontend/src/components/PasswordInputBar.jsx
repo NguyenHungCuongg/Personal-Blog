@@ -6,7 +6,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
+import FormHelperText from "@mui/material/FormHelperText";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function PasswordInputBar(Props) {
@@ -23,8 +23,11 @@ function PasswordInputBar(Props) {
   };
   return (
     <FormControl variant="outlined">
-      <InputLabel htmlFor="outlined-adornment-password">{Props.label}</InputLabel>
+      <InputLabel error={Props.error} htmlFor="outlined-adornment-password">
+        {Props.label}
+      </InputLabel>
       <OutlinedInput
+        error={Props.error}
         id="outlined-adornment-password"
         type={showPassword ? "text" : "password"}
         value={Props.value}
@@ -44,6 +47,7 @@ function PasswordInputBar(Props) {
         }
         label={Props.label}
       />
+      {Props.error ? <FormHelperText error="true">Please enter your password</FormHelperText> : ""}
     </FormControl>
   );
 }
