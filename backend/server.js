@@ -170,7 +170,7 @@ app.get("/api/posts", async (req, res) => {
     const result = await db.query(
       `SELECT Posts.*, Users.* 
       FROM Posts
-      JOIN Users ON Posts.UserID = Users.UserID`
+      JOIN Users ON Posts.AuthorID = Users.UserID`
     );
     res.send(result.rows);
   } catch (error) {

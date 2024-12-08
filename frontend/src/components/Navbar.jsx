@@ -23,7 +23,7 @@ const settings = ["Logout"];
 
 function Navbar() {
   const navigate = useNavigate();
-  const { isAuthenticated, user, loading, setAuthState } = React.useContext(AuthContext);
+  const { isAuthenticated, user, loading, setAuthState } = React.useContext(AuthContext); //isAuthenticated, user, loading là ...authState (các giá trị của authState)
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenUserMenu = (event) => {
