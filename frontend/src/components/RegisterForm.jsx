@@ -15,9 +15,32 @@ function RegisterForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
+  const [emailError, setEmailError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (email.trim() === "") {
+      setEmailError(true);
+    }
+
+    if (username.trim() === "") {
+      setUsernameError(true);
+    }
+
+    if (password.trim() === "") {
+      setPasswordError(true);
+    }
+
+    if (confirmPassword.trim() === "") {
+      setConfirmPasswordError(true);
+    }
+
+    if (email.trim() === "" || password.trim() === "" || username.trim() === "" || confirmPassword.trim() === "") {
+      return;
+    }
     if (password !== confirmPassword) {
       alert("Passwords do not match");
       return;
@@ -42,24 +65,46 @@ function RegisterForm() {
         <AccountCircleOutlinedIcon style={{ fontSize: "5rem", color: "var(--main-color)", margin: "auto" }} />
         <h3 className="fs-1 fw-bold text-center">Register</h3>
         <TextField
-          id="outlined-basic"
+          error={emailError}
+          id={emailError ? "outlined-error" : "outlined-basic"}
           label="Email"
           variant="outlined"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setEmailError(false);
+          }}
+          helperText={emailError ? "Please enter your email" : ""}
         />
         <TextField
-          id="outlined-basic"
+          error={usernameError}
+          id={usernameError ? "outlined-error" : "outlined-basic"}
           label="Username"
           variant="outlined"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            setUsernameError(false);
+          }}
+          helperText={usernameError ? "Please enter your username" : ""}
         />
-        <PasswordInputBar label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <PasswordInputBar
+          error={passwordError}
+          label="Password"
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setPasswordError(false);
+          }}
+        />
+        <PasswordInputBar
+          error={confirmPasswordError}
           label="Confirm Password"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={(e) => {
+            setConfirmPassword(e.target.value);
+            setConfirmPasswordError(false);
+          }}
         />
         <CheckboxWithLabel label="Remember me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
         <Button variant="contained" type="submit">
