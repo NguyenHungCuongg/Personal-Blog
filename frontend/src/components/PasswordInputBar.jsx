@@ -47,7 +47,7 @@ function PasswordInputBar(Props) {
         }
         label={Props.label}
       />
-      {Props.error ? <FormHelperText error="true">Please enter your password</FormHelperText> : ""}
+      {Props.error ? <FormHelperText error="true">{Props.errorMessage}</FormHelperText> : ""}
     </FormControl>
   );
 }

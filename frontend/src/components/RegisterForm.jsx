@@ -4,6 +4,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import PasswordInputBar from "./PasswordInputBar";
 import CheckboxWithLabel from "./CheckboxWithLabel";
+import GeneralSnackBar from "./GeneralSnackBar";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,32 +20,42 @@ function RegisterForm() {
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [checkConfirmPassword, setCheckConfirmPassword] = useState(true);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    //Reset lại các trạng thái lỗi
+    setEmailError(false);
+    setPasswordError(false);
+    setCheckConfirmPassword(true);
+    setOpenSnackBar(false);
+    setErrorMessage("");
+
+    //Các trường hợp nếu email, username, password hoặc confirmPassword không được nhập
     if (email.trim() === "") {
       setEmailError(true);
     }
-
     if (username.trim() === "") {
       setUsernameError(true);
     }
-
     if (password.trim() === "") {
       setPasswordError(true);
     }
-
     if (confirmPassword.trim() === "") {
       setConfirmPasswordError(true);
     }
-
     if (email.trim() === "" || password.trim() === "" || username.trim() === "" || confirmPassword.trim() === "") {
       return;
     }
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setCheckConfirmPassword(false);
       return;
     }
+
+    //Trường hợp nếu các input hợp lệ
     try {
       const response = await axios.post("http://localhost:3000/api/register", {
         email: email,
@@ -52,15 +63,22 @@ function RegisterForm() {
         password: password,
         rememberMe: rememberMe,
       });
+      //Nếu đăng ký thành công thì chuyển hướng về trang chủ
       if (response.data.success) {
         navigate("/"); // Redirect về home page
+      } else {
+        setErrorMessage(response.data.error);
+        setOpenSnackBar(true);
       }
     } catch (err) {
       console.log("Error registering user:", err);
+      alert("An error occurred while registering. Please try again.");
+      setOpenSnackBar(true);
     }
   };
   return (
     <div className="container rounded-4 shadow p-5 px-5" style={{ maxWidth: "480px" }}>
+      <GeneralSnackBar open={openSnackBar} errorMessage={errorMessage} onClose={() => setOpenSnackBar(false)} />
       <form id="loginForm" className="d-flex justify-content-between flex-column gap-4" onSubmit={handleSubmit}>
         <AccountCircleOutlinedIcon style={{ fontSize: "5rem", color: "var(--main-color)", margin: "auto" }} />
         <h3 className="fs-1 fw-bold text-center">Register</h3>
@@ -96,15 +114,20 @@ function RegisterForm() {
             setPassword(e.target.value);
             setPasswordError(false);
           }}
+          errorMessage={passwordError ? "Please enter your password" : ""}
         />
         <PasswordInputBar
-          error={confirmPasswordError}
+          error={confirmPasswordError || !checkConfirmPassword}
           label="Confirm Password"
           value={confirmPassword}
           onChange={(e) => {
             setConfirmPassword(e.target.value);
             setConfirmPasswordError(false);
+            setCheckConfirmPassword(true);
           }}
+          errorMessage={
+            confirmPasswordError ? "Please enter your password" : !checkConfirmPassword ? "Passwords do not match" : ""
+          }
         />
         <CheckboxWithLabel label="Remember me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
         <Button variant="contained" type="submit">

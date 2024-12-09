@@ -76,6 +76,7 @@ function LoginForm() {
             setPassword(e.target.value);
             setPasswordError(false);
           }}
+          errorMessage={passwordError ? "Please enter your password" : ""}
         />
         <CheckboxWithLabel label="Remember me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
         <Button variant="contained" type="submit">

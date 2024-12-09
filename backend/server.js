@@ -111,24 +111,23 @@ app.post("/api/register", async (req, res) => {
     //Kiểm tra xem email hoặc username đã tồn tại chưa
     const checkResult = await db.query("SELECT * FROM Users WHERE email = $1 OR username = $2", [email, username]);
     if (checkResult.rows.length > 0) {
-      return res.status(400).send("Email or username already exists");
+      console.log("Email or username already exists"); // Debugging log
+      return res.json({ success: false, error: "Email or username already exists" });
     }
     //Nếu chưa tồn tại thì tiền hành xác thực và thêm vào database
     else {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
-
       // Chèn thông tin user vào database
       const insertResult = await db.query(
         "INSERT INTO Users (email, username, password) VALUES ($1, $2, $3) RETURNING *",
         [email, username, hashedPassword]
       );
-
       // Lấy thông tin user vừa đăng ký
       const user = insertResult.rows[0];
       req.login(user, (err) => {
         if (err) {
           console.log("Error logging in user:", err);
-          return res.status(500).send("Error logging in user");
+          return res.json({ success: false, error: "Error logging in user" });
         } else {
           return res.json({ success: true });
         }
@@ -136,7 +135,7 @@ app.post("/api/register", async (req, res) => {
     }
   } catch (err) {
     console.log("Error registering user:", err);
-    return res.status(500).send("Error registering user");
+    return res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 });
 
