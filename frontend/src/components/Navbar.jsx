@@ -34,7 +34,7 @@ function Navbar() {
   };
   const handleLogout = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/logout", { withCredentials: true });
+      const response = await axios.get("http://localhost:3000/api/logout", { withCredentials: true });
       if (response.data.success) {
         setAuthState({ isAuthenticated: false, user: null, loading: false });
         navigate("/");
