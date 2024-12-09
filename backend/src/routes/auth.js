@@ -1,6 +1,6 @@
 import express from "express";
-import passport from "../config/passport";
-import { saltRounds } from "../config/constants";
+import passport from "../config/passport.js";
+import { saltRounds } from "../config/constants.js";
 
 const router = express.Router();
 

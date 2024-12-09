@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
-import db from "../config/database";
+import db from "./database.js";
 
 //Serialize và deserialize user
 passport.serializeUser((user, done) => {

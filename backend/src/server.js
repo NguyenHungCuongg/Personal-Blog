@@ -2,9 +2,9 @@ import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
-import sessionMiddleware from "./config/session";
-import passport from "./config/passport";
-import authRoutes from "./routes/auth";
+import sessionMiddleware from "./config/session.js";
+import passport from "./config/passport.js";
+import authRoutes from "./routes/auth.js";
 dotenv.config();
 
 //Khai báo express và cổng port
