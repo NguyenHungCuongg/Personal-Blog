@@ -5,7 +5,7 @@ import { saltRounds } from "../config/constants.js";
 const router = express.Router();
 
 //API đăng ký, tạo tài khoản
-router.post("/api/register", async (req, res) => {
+router.post("/register", async (req, res) => {
   const email = req.body.email;
   const username = req.body.username;
   const password = req.body.password;
@@ -42,7 +42,7 @@ router.post("/api/register", async (req, res) => {
 });
 
 //API đăng nhập
-router.post("/api/login", async (req, res, next) => {
+router.post("/login", async (req, res, next) => {
   console.log("Received login request:", req.body); // Debugging log
   passport.authenticate("local", (err, user, info) => {
     /*
@@ -72,7 +72,7 @@ router.post("/api/login", async (req, res, next) => {
 });
 
 //API lấy dữ liệu posts từ database
-router.get("/api/posts", async (req, res) => {
+router.get("/posts", async (req, res) => {
   try {
     const result = await db.query(
       `SELECT Posts.*, Users.* 
@@ -87,7 +87,7 @@ router.get("/api/posts", async (req, res) => {
 });
 
 //API kiểm tra xem user đã đăng nhập chưa
-router.get("/api/check-auth", (req, res) => {
+router.get("/check-auth", (req, res) => {
   console.log("Session data:", req.session); // Kiểm tra session
   console.log("User data:", req.user); // Kiểm tra user
   try {
@@ -103,7 +103,7 @@ router.get("/api/check-auth", (req, res) => {
 });
 
 // API đăng xuất
-router.get("/api/logout", (req, res) => {
+router.get("/logout", (req, res) => {
   req.logout((err) => {
     if (err) {
       console.log("Error logging out:", err);
