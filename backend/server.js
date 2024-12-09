@@ -85,7 +85,7 @@ passport.use(
       //Nếu không tồn tại thì trả về thông báo
       if (!user) {
         console.log("User not found"); // Debugging log
-        return done(null, false);
+        return done(null, false, { message: "User not found" });
       }
       //Nếu tồn tại thì kiểm tra password
       const isMatch = await bcrypt.compare(password, user.password);
@@ -93,7 +93,7 @@ passport.use(
         return done(null, user);
       } else {
         console.log("Password incorrect"); // Debugging log
-        return done(null, false);
+        return done(null, false, { message: "Incorrect password" });
       }
     } catch (err) {
       console.log("Error logging in user:", err);
@@ -143,17 +143,23 @@ app.post("/api/register", async (req, res) => {
 app.post("/api/login", async (req, res, next) => {
   console.log("Received login request:", req.body); // Debugging log
   passport.authenticate("local", (err, user, info) => {
+    /*
+    Tham số info là tham số thứ 3 trả về từ hàm done() -> chứa thông tin về lỗi 
+    (vd: done(null, false, { message: "Incorrect password" })) -> info là object { message: "Incorrect password" }
+    */
     if (err) {
       console.log("Error logging in user:", err); // Debugging log
-      return res.status(500).send("Error logging in user");
+      return res.json({ success: false, error: "Error logging in user" });
     } else if (!user) {
-      console.log("User not found"); // Debugging log
-      return res.status(400).send("User not found");
+      //Vì có 2 trường hợp (!user): 1) user không tồn tại, 2) password không đúng -> localStrategy sẽ kiểm tra 2 trường hợp này và trả về info.message tương ứng
+      //=> Cần phải sử dụng info.message để xác định lỗi thay vì dùng một chuỗi hằng số như các trường hợp khác.
+      console.log(info.message); // Debugging log
+      return res.json({ success: false, error: info.message });
     } else {
       req.login(user, (err) => {
         if (err) {
           console.log("Error logging in user:", err); // Debugging log
-          return res.status(500).send("Error logging in user");
+          return res.json({ success: false, error: "Error logging in user" });
         } else {
           console.log("User logged in successfully:", user); // Debugging log
           return res.json({ success: true, user });

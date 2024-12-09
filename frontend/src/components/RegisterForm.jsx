@@ -31,6 +31,8 @@ function RegisterForm() {
     setEmailError(false);
     setPasswordError(false);
     setCheckConfirmPassword(true);
+    setConfirmPasswordError(false);
+    setUsernameError(false);
     setOpenSnackBar(false);
     setErrorMessage("");
 
@@ -69,10 +71,14 @@ function RegisterForm() {
       } else {
         setErrorMessage(response.data.error);
         setOpenSnackBar(true);
+        setEmailError(true);
+        setUsernameError(true);
+        setPasswordError(true);
+        setConfirmPasswordError(true);
       }
     } catch (err) {
       console.log("Error registering user:", err);
-      alert("An error occurred while registering. Please try again.");
+      setErrorMessage("An error occurred while registering. Please try again.");
       setOpenSnackBar(true);
     }
   };
@@ -87,7 +93,7 @@ function RegisterForm() {
           id={emailError ? "outlined-error" : "outlined-basic"}
           label="Email"
           variant="outlined"
-          value={email}
+          value={emailError ? "" : email}
           onChange={(e) => {
             setEmail(e.target.value);
             setEmailError(false);
@@ -99,7 +105,7 @@ function RegisterForm() {
           id={usernameError ? "outlined-error" : "outlined-basic"}
           label="Username"
           variant="outlined"
-          value={username}
+          value={usernameError ? "" : username}
           onChange={(e) => {
             setUsername(e.target.value);
             setUsernameError(false);
@@ -109,7 +115,7 @@ function RegisterForm() {
         <PasswordInputBar
           error={passwordError}
           label="Password"
-          value={password}
+          value={passwordError ? "" : password}
           onChange={(e) => {
             setPassword(e.target.value);
             setPasswordError(false);
@@ -119,7 +125,7 @@ function RegisterForm() {
         <PasswordInputBar
           error={confirmPasswordError || !checkConfirmPassword}
           label="Confirm Password"
-          value={confirmPassword}
+          value={confirmPasswordError ? "" : confirmPassword}
           onChange={(e) => {
             setConfirmPassword(e.target.value);
             setConfirmPasswordError(false);
