@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import TextInput from "./TextInput";
 import TagFilter from "./TagFilter";
 import UploadFile from "./UploadFile";
 import DocumentInput from "./DocumentInput";
+import axios from "axios";
 import Button from "@mui/material/Button";
+import { AuthContext } from "../context/AuthContext";
 
 function CreateBlogForm() {
+  const { authState } = useContext(AuthContext);
   const [title, setTitle] = useState("");
   const [topics, setTopics] = useState([]);
   const [content, setContent] = useState("");
@@ -31,6 +34,22 @@ function CreateBlogForm() {
     }
     if (title.trim() === "" || topics.length === 0 || content.trim() === "") {
       return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/posts", {
+        title: title,
+        topics: topics,
+        content: content,
+        user: authState.user, //Là một Object chứa thông tin của người dùng hiện tại đang đăng nhập
+      });
+      if (response.data.success) {
+        console.log("Post created successfully");
+      } else {
+        console.log("Error creating post:", response.data.error);
+      }
+    } catch (error) {
+      console.log("Error submiting post:", error);
     }
   };
 

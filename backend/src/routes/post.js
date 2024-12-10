@@ -18,4 +18,22 @@ router.get("/posts", async (req, res) => {
   }
 });
 
+router.post("/posts", async (req, res) => {
+  const title = res.body.title;
+  const topics = res.body.topics;
+  const content = res.body.content;
+  const authorID = res.body.user.UserID;
+  try {
+    const result = await db.query(
+      `INSERT INTO Posts (Title, Topics, Content, AuthorID)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *`,
+      [title, topics, content, authorID]
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 export default router;
