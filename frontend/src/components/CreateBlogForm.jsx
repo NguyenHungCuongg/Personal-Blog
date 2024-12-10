@@ -15,7 +15,23 @@ function CreateBlogForm() {
   const [contentError, setContentError] = useState(false);
 
   const handleSubmit = async (e) => {
+    setTitleError(false);
+    setTopicsError(false);
+    setContentError(false);
+
     e.preventDefault();
+    if (title.trim() === "") {
+      setTitleError(true);
+    }
+    if (topics.length === 0) {
+      setTopicsError(true);
+    }
+    if (content.trim() === "") {
+      setContentError(true);
+    }
+    if (title.trim() === "" || topics.length === 0 || content.trim() === "") {
+      return;
+    }
   };
 
   return (
@@ -44,18 +60,18 @@ function CreateBlogForm() {
           label="Topics"
           placeholder="Add post topics"
           value={topicsError ? [] : topics}
-          onChange={(event, value) => {
-            setTopics(event, value);
+          onChange={(value) => {
+            setTopics(value);
             setTopicsError(false);
           }}
         />
         <UploadFile label="Banner Image" />
         <DocumentInput
           label="Content"
-          error={titleError}
+          error={contentError}
           value={contentError ? "" : content}
-          onChange={(e) => {
-            setContent(e.target.value);
+          onChange={(value) => {
+            setContent(value);
             setContentError(false);
           }}
         />

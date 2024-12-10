@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 
 function TagFilter(Props) {
   const handleChange = (event, value) => {
-    Props.onChange(event, value);
+    Props.onChange(value);
   };
 
   return (
