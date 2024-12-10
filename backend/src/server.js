@@ -5,6 +5,7 @@ import cors from "cors";
 import sessionMiddleware from "./config/session.js";
 import passport from "./config/passport.js";
 import authRoutes from "./routes/auth.js";
+import postRoutes from "./routes/post.js";
 dotenv.config();
 
 //Khai báo express và cổng port
@@ -20,6 +21,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/api", authRoutes);
+app.use("/api", postRoutes);
 
 //chạy server
 app.listen(port, () => {
