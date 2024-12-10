@@ -44,8 +44,8 @@ function CreateBlogForm() {
           label="Topics"
           placeholder="Add post topics"
           value={topicsError ? [] : topics}
-          onChange={(e) => {
-            setTopics(e.target.value);
+          onChange={(event, value) => {
+            setTopics(event, value);
             setTopicsError(false);
           }}
         />

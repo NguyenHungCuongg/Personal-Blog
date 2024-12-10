@@ -2,6 +2,10 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
 function TagFilter(Props) {
+  const handleChange = (event, value) => {
+    Props.onChange(event, value);
+  };
+
   return (
     <div>
       {Props.animatedLabel ? (
@@ -9,9 +13,10 @@ function TagFilter(Props) {
           multiple
           id="multiple-limit-tags"
           options={blogTags}
-          getOptionLabel={(option) => option.title}
+          getOptionLabel={(option) => option.tagName}
           renderInput={(params) => <TextField {...params} label="Topics" placeholder="Add more filters" />}
           sx={{ maxWidth: "auto" }}
+          onChange={handleChange}
         />
       ) : (
         <div className="d-flex flex-column gap-2">
@@ -20,9 +25,10 @@ function TagFilter(Props) {
             multiple
             id="multiple-limit-tags"
             options={blogTags}
-            getOptionLabel={(option) => option.title}
+            getOptionLabel={(option) => option.tagName}
             renderInput={(params) => <TextField {...params} placeholder={Props.placeholder} />}
             sx={{ maxWidth: "auto" }}
+            onChange={handleChange}
           />
         </div>
       )}
@@ -31,14 +37,14 @@ function TagFilter(Props) {
 }
 
 const blogTags = [
-  { title: "Art" },
-  { title: "Technology" },
-  { title: "Programming & Coding" },
-  { title: "Design" },
-  { title: "Book" },
-  { title: "Anime & Manga" },
-  { title: "Self-development" },
-  { title: "Travel" },
+  { tagName: "Art" },
+  { tagName: "Technology" },
+  { tagName: "Programming & Coding" },
+  { tagName: "Design" },
+  { tagName: "Book" },
+  { tagName: "Anime & Manga" },
+  { tagName: "Self-development" },
+  { tagName: "Travel" },
 ];
 
 export default TagFilter;
