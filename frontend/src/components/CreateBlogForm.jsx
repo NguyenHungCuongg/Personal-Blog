@@ -1,14 +1,16 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import TextInput from "./TextInput";
 import TagFilter from "./TagFilter";
 import UploadFile from "./UploadFile";
 import DocumentInput from "./DocumentInput";
 import axios from "axios";
 import Button from "@mui/material/Button";
-import { AuthContext } from "../context/AuthContext";
+import AuthContext from "../context/AuthContext";
 
 function CreateBlogForm() {
-  const { authState } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);
   const [title, setTitle] = useState("");
   const [topics, setTopics] = useState([]);
   const [content, setContent] = useState("");
@@ -18,11 +20,15 @@ function CreateBlogForm() {
   const [contentError, setContentError] = useState(false);
 
   const handleSubmit = async (e) => {
+    console.log("submitting post");
+    e.preventDefault();
     setTitleError(false);
     setTopicsError(false);
     setContentError(false);
-
-    e.preventDefault();
+    console.log(title);
+    console.log(topics);
+    console.log(content);
+    console.log(user);
     if (title.trim() === "") {
       setTitleError(true);
     }
@@ -35,21 +41,25 @@ function CreateBlogForm() {
     if (title.trim() === "" || topics.length === 0 || content.trim() === "") {
       return;
     }
-
     try {
-      const response = await axios.post("http://localhost:3000/api/posts", {
-        title: title,
-        topics: topics,
-        content: content,
-        user: authState.user, //Là một Object chứa thông tin của người dùng hiện tại đang đăng nhập
-      });
+      const response = await axios.post(
+        "http://localhost:3000/api/posts",
+        {
+          title: title,
+          topics: topics,
+          content: content,
+          user: user,
+        },
+        { withCredentials: true }
+      );
       if (response.data.success) {
-        console.log("Post created successfully");
+        console.log(response.data.message);
+        navigate("/blog");
       } else {
-        console.log("Error creating post:", response.data.error);
+        console.log(response.data.message);
       }
     } catch (error) {
-      console.log("Error submiting post:", error);
+      console.log("Error submitting post:", error);
     }
   };
 
@@ -64,7 +74,7 @@ function CreateBlogForm() {
         <h1 className="fw-bold pt-2">Create Blog Post</h1>
         <TextInput
           error={titleError}
-          id={titleError ? "outlined-error" : "outlined-basic"}
+          id={titleError ? "outlined-error fullWidth" : "outlined-basic fullWidth"}
           label="Title"
           animatedLabel={false}
           placeholder="Enter post title"
@@ -95,7 +105,7 @@ function CreateBlogForm() {
           }}
         />
         <hr />
-        <Button variant="contained" sx={{ padding: "6px 12px" }} type="submit">
+        <Button variant="contained" type="submit" sx={{ padding: "6px 12px" }}>
           Create Post
         </Button>
       </form>

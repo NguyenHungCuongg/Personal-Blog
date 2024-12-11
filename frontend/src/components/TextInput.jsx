@@ -4,11 +4,25 @@ function TextInput(Props) {
   return (
     <div>
       {Props.animatedLabel ? (
-        <TextField fullWidth id="fullWidth" label={Props.label} />
+        <TextField
+          onChange={Props.onChange}
+          id={Props.id}
+          error={Props.error}
+          value={Props.value}
+          fullWidth
+          label={Props.label}
+        />
       ) : (
         <div className="d-flex flex-column gap-2">
           <label className="fw-semibold fs-4">{Props.label}</label>
-          <TextField fullWidth id="fullWidth" placeholder={Props.placeholder} />
+          <TextField
+            onChange={Props.onChange}
+            id={Props.id}
+            error={Props.error}
+            value={Props.value}
+            fullWidth
+            placeholder={Props.placeholder}
+          />
         </div>
       )}
     </div>

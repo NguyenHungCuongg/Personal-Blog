@@ -24,8 +24,8 @@ CREATE TABLE Tags (
 );
 
 CREATE TABLE TagsOfPost (
-    PostID INT REFERENCES Posts(PostID),
-    TagID INT REFERENCES Tags(TagID),
+    PostID INT NOT NULL REFERENCES Posts(PostID),
+    TagID INT NOT NULL REFERENCES Tags(TagID),
     PRIMARY KEY (PostID, TagID)
 );
 
@@ -41,7 +41,7 @@ ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid");
 CREATE INDEX "IDX_session_expire" ON "session" ("expire");
 
 -----------------Thêm giá trị cho Tags-----------------
-
+    
 INSERT INTO Tags(TagName)
 VALUES 
 	('Art'),
