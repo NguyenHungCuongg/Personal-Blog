@@ -3,7 +3,8 @@ import TextField from "@mui/material/TextField";
 
 function TagFilter(Props) {
   const handleChange = (event, value) => {
-    Props.onChange(value);
+    const tagNames = value.map((option) => option.tagName);
+    Props.onChange(tagNames);
   };
 
   return (
@@ -13,7 +14,7 @@ function TagFilter(Props) {
           multiple
           id="multiple-limit-tags"
           options={blogTags}
-          getOptionLabel={(option) => option.tagName}
+          getOptionLabel={(option) => option.displayName}
           renderInput={(params) => <TextField {...params} label="Topics" placeholder="Add more filters" />}
           sx={{ maxWidth: "auto" }}
           onChange={handleChange}
@@ -25,7 +26,7 @@ function TagFilter(Props) {
             multiple
             id="multiple-limit-tags"
             options={blogTags}
-            getOptionLabel={(option) => option.tagName}
+            getOptionLabel={(option) => option.displayName}
             renderInput={(params) => <TextField {...params} placeholder={Props.placeholder} />}
             sx={{ maxWidth: "auto" }}
             onChange={handleChange}
@@ -37,14 +38,15 @@ function TagFilter(Props) {
 }
 
 const blogTags = [
-  { tagName: "Art" },
-  { tagName: "Technology" },
-  { tagName: "Programming & Coding" },
-  { tagName: "Design" },
-  { tagName: "Book" },
-  { tagName: "Anime & Manga" },
-  { tagName: "Self-development" },
-  { tagName: "Travel" },
+  //tagName dùng để gửi lên server (dễ truy vấn database hơn), displayName dùng để hiển thị trên giao diện
+  { tagName: "Art", displayName: "Art" },
+  { tagName: "Technology", displayName: "Technology" },
+  { tagName: "Programing&Coding", displayName: "Programing & Coding" },
+  { tagName: "Design", displayName: "Design" },
+  { tagName: "Book", displayName: "Book" },
+  { tagName: "Anime&Manga", displayName: "Anime & Manga" },
+  { tagName: "SelfDevelopment", displayName: "Self Development" },
+  { tagName: "Travel", displayName: "Travel" },
 ];
 
 export default TagFilter;
