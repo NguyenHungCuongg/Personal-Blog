@@ -16,6 +16,16 @@ function Blogcard(Props) {
   if (!post) {
     return null;
   }
+
+  //Cần phải hạn chế số lượng content được viết ra ngoài description
+  //Đây là hàm giúp hạn chế số lượng content
+  const truncateContent = (content, maxLength) => {
+    if (content.length <= maxLength) {
+      return content;
+    }
+    //Nếu content dài hơn maxLength thì cắt bớt và thêm dấu "..."
+    return content.slice(0, maxLength) + "...";
+  };
   return (
     <Card>
       <CardHeader
@@ -55,7 +65,7 @@ function Blogcard(Props) {
           {post.title}
         </Typography>
         <Typography variant="body2" sx={{ fontFamily: "Lato", color: "#615561" }}>
-          {post.content}
+          {truncateContent(post.content, 100)}
         </Typography>
       </CardContent>
     </Card>
