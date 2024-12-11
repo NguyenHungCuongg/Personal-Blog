@@ -22,7 +22,7 @@ function Blogcard(Props) {
         id="blogHeader"
         avatar={
           <Avatar sx={{ bgcolor: grey[500] }} aria-label="recipe">
-            {post.Username ? post.Username[0] : "UK"}
+            {post.username ? post.username[0] : "UK"}
           </Avatar>
         }
         action={
@@ -36,8 +36,8 @@ function Blogcard(Props) {
             }}
           />
         }
-        title={post.Username}
-        subheader={new Date(post.PostCreatedAt).toLocaleDateString()}
+        title={post.username}
+        subheader={new Date(post.postcreatedat).toLocaleDateString()}
         sx={{
           "& .MuiCardHeader-title": {
             fontFamily: "Montserrat",
@@ -49,13 +49,13 @@ function Blogcard(Props) {
           },
         }}
       />
-      <CardMedia component="img" height="194" image={post.BannerImageURL || assets.defaultthumbnail} alt={post.Title} />
+      <CardMedia component="img" height="194" image={post.bannerimageurl || assets.defaultthumbnail} alt={post.title} />
       <CardContent>
         <Typography variant="h6" sx={{ fontFamily: "Montserrat", fontWeight: "500", color: "#131113" }}>
-          {post.Title}
+          {post.title}
         </Typography>
         <Typography variant="body2" sx={{ fontFamily: "Lato", color: "#615561" }}>
-          {post.Content}
+          {post.content}
         </Typography>
       </CardContent>
     </Card>

@@ -20,13 +20,10 @@ function BlogAlbum() {
   return (
     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
       {posts.map((post) => (
-        <div className="col" key={post.PostID}>
+        <div className="col" key={post.postid}>
           <Blogcard post={post} />
         </div>
       ))}
-      <div className="col">
-        <Blogcard />
-      </div>
     </div>
   );
 }
