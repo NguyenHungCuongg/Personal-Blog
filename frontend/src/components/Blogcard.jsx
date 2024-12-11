@@ -60,12 +60,36 @@ function Blogcard(Props) {
         }}
       />
       <CardMedia component="img" height="194" image={post.bannerimageurl || assets.defaultthumbnail} alt={post.title} />
-      <CardContent>
-        <Typography variant="h6" sx={{ fontFamily: "Montserrat", fontWeight: "500", color: "#131113" }}>
+      <CardContent className="mb-4">
+        <Typography
+          variant="h6"
+          sx={{
+            fontFamily: "Montserrat",
+            fontWeight: "600",
+            color: "#131113",
+            overflow: "hidden",
+            height: "3em",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: 2, //giới hạn trong 2 dòng
+            webkitBoxOrient: "vertical",
+          }}
+        >
           {post.title}
         </Typography>
-        <Typography variant="body2" sx={{ fontFamily: "Lato", color: "#615561" }}>
-          {truncateContent(post.content, 100)}
+        <Typography
+          variant="body2"
+          sx={{
+            fontFamily: "Lato",
+            color: "#615561",
+            height: "4em",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: 3, //giới hạn trong 2 dòng
+            webkitBoxOrient: "vertical",
+          }}
+        >
+          {truncateContent(post.content, 200)}
         </Typography>
       </CardContent>
     </Card>
