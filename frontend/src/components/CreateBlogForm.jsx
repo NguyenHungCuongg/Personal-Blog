@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import TextInput from "./TextInput";
 import TagFilter from "./TagFilter";
@@ -14,21 +14,25 @@ function CreateBlogForm() {
   const [title, setTitle] = useState("");
   const [topics, setTopics] = useState([]);
   const [content, setContent] = useState("");
+  const [bannerImageUrl, setBannerImageUrl] = useState("");
 
   const [titleError, setTitleError] = useState(false);
   const [topicsError, setTopicsError] = useState(false);
   const [contentError, setContentError] = useState(false);
 
+  const fileInput = useRef(null);
+
   const handleSubmit = async (e) => {
-    console.log("submitting post");
     e.preventDefault();
     setTitleError(false);
     setTopicsError(false);
     setContentError(false);
+    //debug các giá trị đã nhập
     console.log(title);
     console.log(topics);
     console.log(content);
     console.log(user);
+    //Kiểm tra xem các giá trị có hợp lệ không (có trống hay không)
     if (title.trim() === "") {
       setTitleError(true);
     }
@@ -41,6 +45,12 @@ function CreateBlogForm() {
     if (title.trim() === "" || topics.length === 0 || content.trim() === "") {
       return;
     }
+    //Nếu fileInput đã được khởi tạo
+    //Gọi hàm handleUpload của component UploadFile.jsx để upload file
+    if (fileInput.current) {
+      await fileInput.current.handleUpload();
+    }
+
     try {
       const response = await axios.post(
         "http://localhost:3000/api/posts",
@@ -49,6 +59,7 @@ function CreateBlogForm() {
           topics: topics,
           content: content,
           user: user,
+          bannerImageUrl: bannerImageUrl,
         },
         { withCredentials: true }
       );
@@ -94,7 +105,7 @@ function CreateBlogForm() {
             setTopicsError(false);
           }}
         />
-        <UploadFile label="Banner Image" />
+        <UploadFile label="Banner Image" ref={fileInput} UploadFile={(image) => setBannerImageUrl(image.fileInput)} />
         <DocumentInput
           label="Content"
           error={contentError}
