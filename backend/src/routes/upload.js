@@ -39,7 +39,7 @@ router.post("/upload", upload.single("file"), (req, res) => {
   }
   console.log("File received");
   console.log(req.file);
-  const fileUrl = `/uploads/${req.file.filename}`;
+  const fileUrl = `http://localhost:3000/uploads/${req.file.filename}`;
   console.log(fileUrl);
   res.send({ fileUrl });
 });

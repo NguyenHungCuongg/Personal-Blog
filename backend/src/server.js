@@ -7,6 +7,9 @@ import passport from "./config/passport.js";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/post.js";
 import uploadRoutes from "./routes/upload.js";
+import { fileURLToPath } from "url";
+import path from "path";
+
 dotenv.config();
 
 //Khai báo express và cổng port
@@ -20,6 +23,12 @@ app.use(bodyParser.json());
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Chuyển đổi import.meta.url thành __dirnam
+const __filename = fileURLToPath(import.meta.url); // Đường dẫn file hiện tại
+const __dirname = path.dirname(__filename); // Đường dẫn thư mục hiện tại
+// Middleware phục vụ file tĩnh
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api", authRoutes);
 app.use("/api", postRoutes);
