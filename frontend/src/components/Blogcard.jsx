@@ -16,7 +16,6 @@ function Blogcard(Props) {
   if (!post) {
     return null;
   }
-
   //Cần phải hạn chế số lượng content được viết ra ngoài description
   //Đây là hàm giúp hạn chế số lượng content
   const truncateContent = (content, maxLength) => {

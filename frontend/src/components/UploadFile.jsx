@@ -12,11 +12,10 @@ const UploadFile = forwardRef((Props, ref) => {
     try {
       const result = await axios.post("http://localhost:3000/api/upload", formData);
       console.log(result.data);
-      if (Props.onUpload) {
-        Props.onUpload(result.data);
-      }
+      return result.data;
     } catch (error) {
       console.log(error);
+      return null;
     }
   };
 

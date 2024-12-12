@@ -21,12 +21,14 @@ router.get("/posts", async (req, res) => {
 router.post("/posts", async (req, res) => {
   const title = req.body.title;
   const topics = req.body.topics;
+  const bannerImageUrl = req.body.bannerImageUrl;
+  console.log("Gia tri cua bannerImageUrl trong API" + bannerImageUrl);
   const content = req.body.content;
   const authorID = req.body.user.userid;
   try {
     const postResult = await db.query(
-      `INSERT INTO Posts (Title, Content, AuthorID) VALUES ($1, $2, $3) RETURNING PostID`,
-      [title, content, authorID]
+      `INSERT INTO Posts (Title, Content, AuthorID, BannerImageURL) VALUES ($1, $2, $3, $4) RETURNING PostID`,
+      [title, content, authorID, bannerImageUrl]
     );
     const postID = postResult.rows[0].postid;
     for (const topic of topics) {
