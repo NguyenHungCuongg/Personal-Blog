@@ -50,6 +50,7 @@ const blogTags = [
   { tagName: "Music", displayName: "Music" },
   { tagName: "Life", displayName: "Life" },
   { tagName: "entertainment", displayName: "Entertainment" },
+  { tagName: "education", displayName: "Education" },
 ];
 
 export default TagFilter;

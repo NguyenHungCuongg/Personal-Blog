@@ -54,5 +54,6 @@ VALUES
 	('Travel'),
     ('Music'),
     ('Life'),
-    ('Entertainment')
+    ('Entertainment'),
+    ('Education')
 
