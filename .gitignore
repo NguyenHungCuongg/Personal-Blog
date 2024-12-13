@@ -1,3 +1,7 @@
+# Ngăn không cho folder "uploads" được commit lên git
+uploads/
+
+
 # Logs
 logs
 *.log
