@@ -30,7 +30,7 @@ function Blogcard(Props) {
     return content.slice(0, maxLength) + "...";
   };
   return (
-    <Card>
+    <Card style={{ height: "100%" }}>
       <CardHeader
         id="blogHeader"
         avatar={
@@ -62,14 +62,16 @@ function Blogcard(Props) {
           },
         }}
       />
-      <Link to={`/blog/${post.postid}`} className="stretched-link" style={{ textDecoration: "none" }}>
+      <Link to={`/blog/${post.postid}`} style={{ textDecoration: "none" }}>
         <CardMedia
           component="img"
           height="194"
           image={post.bannerimageurl || assets.defaultthumbnail}
           alt={post.title}
         />
-        <CardContent className="mb-4">
+      </Link>
+      <CardContent className="mb-4">
+        <Link to={`/blog/${post.postid}`} style={{ textDecoration: "none" }}>
           <Typography
             variant="h6"
             sx={{
@@ -86,24 +88,23 @@ function Blogcard(Props) {
           >
             {post.title}
           </Typography>
-
-          <Typography
-            variant="body2"
-            sx={{
-              fontFamily: "Lato",
-              color: "#615561",
-              height: "4em",
-              textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitLineClamp: 3, //giới hạn trong 2 dòng
-              webkitBoxOrient: "vertical",
-            }}
-          >
-            {truncateContent(post.content, 200)}
-          </Typography>
-        </CardContent>
-      </Link>
-      <ul style={{ listStyleType: "none" }} className="d-flex gap-2 p-3">
+        </Link>
+        <Typography
+          variant="body2"
+          sx={{
+            fontFamily: "Lato",
+            color: "#615561",
+            height: "4em",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: 3, //giới hạn trong 2 dòng
+            webkitBoxOrient: "vertical",
+          }}
+        >
+          {truncateContent(post.content, 200)}
+        </Typography>
+      </CardContent>
+      <ul style={{ listStyleType: "none" }} className="d-flex gap-2 p-3 flex-wrap">
         {post.topics.map((topic) => (
           <li key={topic}>
             <span
