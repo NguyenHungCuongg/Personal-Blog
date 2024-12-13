@@ -21,6 +21,28 @@ router.get("/posts", async (req, res) => {
   }
 });
 
+//API lấy dữ liệu post từ database theo postID
+router.get("/posts/:postId", async (req, res) => {
+  try {
+    const result = await db.query(
+      `
+      SELECT Posts.*, Users.*, array_agg(Tags.TagName) as topics
+      FROM Posts
+      JOIN Users ON Posts.AuthorID = Users.UserID
+      JOIN TagsOfPost ON Posts.PostID = TagsOfPost.PostID
+      JOIN Tags ON TagsOfPost.TagID = Tags.TagID
+      WHERE Posts.PostId = $1
+      GROUP BY Posts.PostID, Users.UserID
+      `,
+      [req.params.postId] //req.params.postID lấy postID từ URL ("/posts/:postID")
+    );
+    res.send(result.rows[0]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.post("/posts", async (req, res) => {
   const title = req.body.title;
   const topics = req.body.topics;

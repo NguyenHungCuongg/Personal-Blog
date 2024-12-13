@@ -4,16 +4,16 @@ import ByUser from "../components/ByUser";
 import CreateAt from "./CreateAt";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function BlogHeader() {
+function BlogHeader(Props) {
   const isSmallScreen = useMediaQuery("(max-width:768px)");
   return (
     <div>
-      <h3 className="fs-1 fw-bold">What is Lorem Ipsum?</h3>
+      <h3 className="fs-1 fw-bold">{Props.title}</h3>
       <div className={`d-flex align-items-center ${isSmallScreen ? "flex-column gap-2" : " gap-4"}`}>
-        <TagsList />
+        <TagsList topics={Props.topics} />
         <div className="d-flex align-items-center gap-4">
-          <ByUser />
-          <CreateAt />
+          <ByUser username={Props.username} />
+          <CreateAt createAt={Props.createAt} />
         </div>
       </div>
     </div>

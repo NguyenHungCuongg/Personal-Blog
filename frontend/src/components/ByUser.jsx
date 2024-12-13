@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-function ByUser() {
+function ByUser(Props) {
   return (
     <div
       className="d-flex align-items-center align-middle"
@@ -8,7 +8,7 @@ function ByUser() {
     >
       By
       <PersonOutlineOutlinedIcon />
-      Nguyen Hung Cuong
+      {Props.username}
     </div>
   );
 }

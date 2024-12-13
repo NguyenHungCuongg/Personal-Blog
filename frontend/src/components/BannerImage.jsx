@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { assets } from "../assets/assets";
 
-function BannerImage() {
+function BannerImage(Props) {
   const imgRef = useRef(null);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function BannerImage() {
     <img
       ref={imgRef}
       className="img-fluid rounded"
-      src={assets.defaultbanner}
+      src={Props.bannerImageUrl || assets.defaultbanner}
       alt="Banner"
       style={{ width: "100%", objectFit: "cover" }}
     />
