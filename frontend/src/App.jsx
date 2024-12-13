@@ -64,7 +64,7 @@ function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/register" element={<Register />} />
             <Route path="/createblog" element={<CreateBlog />} />
-            <Route path="/blog/test" element={<ViewBlog />} />
+            <Route path="/blog/:postId" element={<ViewBlog />} />
           </Routes>
           <Footer />
         </ThemeProvider>
