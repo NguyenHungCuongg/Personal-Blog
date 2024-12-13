@@ -7,9 +7,12 @@ const router = express.Router();
 router.get("/posts", async (req, res) => {
   try {
     const result = await db.query(
-      `SELECT Posts.*, Users.* 
+      `SELECT Posts.*, Users.*,  array_agg(Tags.TagName) as topics
       FROM Posts
-      JOIN Users ON Posts.AuthorID = Users.UserID`
+      JOIN Users ON Posts.AuthorID = Users.UserID
+      JOIN TagsOfPost ON Posts.PostID = TagsOfPost.PostID
+      JOIN Tags ON TagsOfPost.TagID = Tags.TagID
+      GROUP BY Posts.PostID, Users.UserID` //Truy cập mảng topics thông qua array_agg với mỗi post.
     );
     res.send(result.rows);
   } catch (error) {

@@ -6,7 +6,6 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import { grey } from "@mui/material/colors";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -30,7 +29,7 @@ function Blogcard(Props) {
       <CardHeader
         id="blogHeader"
         avatar={
-          <Avatar sx={{ bgcolor: grey[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "var(--main-color)" }} aria-label="recipe">
             {post.username ? post.username[0] : "UK"}
           </Avatar>
         }
@@ -91,6 +90,18 @@ function Blogcard(Props) {
           {truncateContent(post.content, 200)}
         </Typography>
       </CardContent>
+      <ul style={{ listStyleType: "none" }} className="d-flex gap-2 p-3">
+        {post.topics.map((topic) => (
+          <li key={topic}>
+            <span
+              className="badge rounded-pill"
+              style={{ backgroundColor: "var(--secondary-color)", color: "var(--dark-color)" }}
+            >
+              {topic}
+            </span>
+          </li>
+        ))}
+      </ul>
     </Card>
   );
 }
