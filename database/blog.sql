@@ -51,5 +51,8 @@ VALUES
 	('Book'),
 	('Anime&Manga'),
 	('SelfDevelopment'),
-	('Travel')
+	('Travel'),
+    ('Music'),
+    ('Life'),
+    ('Entertainment')
 

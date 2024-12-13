@@ -47,6 +47,9 @@ const blogTags = [
   { tagName: "Anime&Manga", displayName: "Anime & Manga" },
   { tagName: "SelfDevelopment", displayName: "Self Development" },
   { tagName: "Travel", displayName: "Travel" },
+  { tagName: "Music", displayName: "Music" },
+  { tagName: "Life", displayName: "Life" },
+  { tagName: "entertainment", displayName: "Entertainment" },
 ];
 
 export default TagFilter;
