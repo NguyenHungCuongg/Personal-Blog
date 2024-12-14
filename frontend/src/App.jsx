@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -11,6 +12,7 @@ import CreateBlog from "./pages/CreateBlog";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Footer from "./components/Footer";
 import { AuthProvider } from "./context/AuthContext";
+import PuffLoader from "react-spinners/PuffLoader";
 
 const theme = createTheme({
   palette: {
@@ -51,22 +53,37 @@ const theme = createTheme({
 });
 
 function App() {
+  const [loading, setLoading] = React.useState(false);
+  React.useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 800);
+  }, []);
   return (
     <div>
       <AuthProvider>
         <ThemeProvider theme={theme}>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/createblog" element={<CreateBlog />} />
-            <Route path="/blog/:postId" element={<ViewBlog />} />
-          </Routes>
-          <Footer />
+          {loading ? (
+            <div className="loader-container">
+              <PuffLoader color={"var(--main-color)"} loading={loading} size={150} speedMultiplier={1} />
+            </div>
+          ) : (
+            <div>
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/createblog" element={<CreateBlog />} />
+                <Route path="/blog/:postId" element={<ViewBlog />} />
+              </Routes>
+              <Footer />
+            </div>
+          )}
         </ThemeProvider>
       </AuthProvider>
     </div>

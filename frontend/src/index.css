@@ -26,3 +26,10 @@ body {
   background-color: var(--light-color);
   line-height: 1.6;
 }
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}

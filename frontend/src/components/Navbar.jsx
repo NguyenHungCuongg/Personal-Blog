@@ -14,6 +14,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import PuffLoader from "react-spinners/PuffLoader";
 
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -80,7 +81,11 @@ function Navbar() {
 
   //Nếu đang xác thực thì không component nào được render
   if (loading) {
-    return null;
+    return (
+      <div className="loader-container">
+        <PuffLoader color={"var(--main-color)"} loading={loading} size={150} speedMultiplier={1} />
+      </div>
+    );
   }
 
   console.log("Navbar state:", { isAuthenticated, loading }); //debugging log

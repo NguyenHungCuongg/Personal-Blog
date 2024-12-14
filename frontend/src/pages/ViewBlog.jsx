@@ -5,6 +5,7 @@ import BlogHeader from "../components/BlogHeader";
 import BannerImage from "../components/BannerImage";
 import BlogContent from "../components/BlogContent";
 import axios from "axios";
+import PuffLoader from "react-spinners/PuffLoader";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function ViewBlog() {
@@ -24,7 +25,11 @@ function ViewBlog() {
   }, [postId]);
 
   if (!post) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loader-container">
+        <PuffLoader color={"var(--main-color)"} loading={true} size={150} speedMultiplier={1} />
+      </div>
+    );
   }
 
   //vì giá trị của post.postcreatedate trong database là một Object Date() nên cần chuyển đổi nó sang dạng string
