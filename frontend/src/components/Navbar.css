@@ -62,6 +62,15 @@
   transition: 0.3s ease-in-out;
 }
 
+#navBarTags li a.active-link {
+  color: var(--main-color) !important;
+  font-weight: 700 !important;
+}
+
+#navBarTags li a.active-link::after {
+  width: 80%;
+}
+
 /*---------------Media---------------------*/
 
 /* Điện thoại di động lớn */

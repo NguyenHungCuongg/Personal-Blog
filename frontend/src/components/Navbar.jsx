@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import Button from "@mui/material/Button";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
@@ -18,13 +18,35 @@ import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
-
 const settings = ["Logout"];
 
 function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation(); //Lấy location hiện tại
   const { isAuthenticated, user, loading, setAuthState } = React.useContext(AuthContext); //isAuthenticated, user, loading là ...authState (các giá trị của authState)
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  React.useEffect(() => {
+    console.log("useEffect running");
+    const currentPath = location.pathname; //Lấy đường dẫn hiện tại
+    console.log("Current path:", currentPath); //debugging log
+
+    setTimeout(() => {
+      const navLinks = document.querySelectorAll("#navBarTags a"); //Lấy tất cả thẻ a trong #navBarTags
+      console.log("Nav links:", navLinks); //debugging log
+      navLinks.forEach((link) => {
+        console.log("Link href:", link.getAttribute("href")); //debugging log
+        //Duyệt qua từng thẻ a, kiểm tra xem href của thẻ a có bằng với đường dẫn hiện tại không
+        if (link.getAttribute("href") === currentPath) {
+          //Nếu bằng thì thêm class active vào thẻ a đó
+          link.classList.add("active-link");
+        } else {
+          //Nếu không bằng thì xóa class active khỏi thẻ a đó
+          link.classList.remove("active-link");
+        }
+      });
+    }, 100); // Delay execution by 100ms
+  }, [location.pathname]); //Chỉ chạy khi location.pathname thay đổi
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
