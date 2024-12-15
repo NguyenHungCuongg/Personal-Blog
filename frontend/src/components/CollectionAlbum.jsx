@@ -3,11 +3,19 @@ import { assets } from "../assets/assets";
 import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import { convertDateToString } from "../../../backend/src/helpers/convertDateToString";
 import axios from "axios";
 
 function CollectionAlbum(Props) {
   const [post, setPost] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -22,9 +30,37 @@ function CollectionAlbum(Props) {
     fetchPosts();
   }, [Props.type]);
 
+  const handleClickOpen = (post) => {
+    setSelectedPost(post);
+    setOpen(true);
+  };
+
+  const handleClose = async (confirm) => {
+    if (!selectedPost) return;
+    if (confirm) {
+      try {
+        const response = await axios.post(
+          `http://localhost:3000/api/mycollection/${Props.type}/delete/${selectedPost.postid}`,
+          {
+            withCredentials: true,
+          }
+        );
+        console.log(response.data);
+        if (response.data.success) {
+          const newPost = post.filter((item) => item.postid !== selectedPost.postid);
+          setPost(newPost);
+        }
+      } catch (error) {
+        console.log("Error deleting post", error);
+      }
+    }
+    setOpen(false);
+  };
+
   return (
     <div className="container my-3 py-3">
-      <h3>{Props.type === "mypost" ? "My Posts" : "My Saved Posts"}</h3>
+      <h1 className="mb-4 fw-semibold">{Props.type === "mypost" ? "My Post" : "My Saved Posts"}</h1>
+      <hr className="mb-3" />
       <div className="row mb-2">
         {post.map((post) => (
           <div className="col-md-6 mb-3" key={post.postid}>
@@ -46,7 +82,7 @@ function CollectionAlbum(Props) {
                 <strong className="d-inline-block mb-2 text-primary-emphasis">{post.username}</strong>
                 <Link to={`/blog/${post.postid}`} style={{ textDecoration: "none" }}>
                   <h3
-                    className="mb-0"
+                    className="mb-0 fw-semibold"
                     style={{
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -54,6 +90,7 @@ function CollectionAlbum(Props) {
                       display: "-webkit-box",
                       WebkitLineClamp: "2",
                       WebkitBoxOrient: "vertical",
+                      color: "var(--dark-color)",
                     }}
                   >
                     {post.title}
@@ -75,9 +112,32 @@ function CollectionAlbum(Props) {
                 </p>
               </div>
               <div id="postModification" className="position-absolute bottom-0 end-0 p-2 d-flex justify-content-end">
-                <Button color="var(--dark-hover-color)">
+                <Button color="var(--dark-hover-color)" onClick={() => handleClickOpen(post)}>
                   <DeleteIcon />
                 </Button>
+                <Dialog
+                  open={open}
+                  onClose={() => handleClose(false)}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      {Props.type === "mypost"
+                        ? "This action will delete your post permanently."
+                        : "This action will remove the post from your saved list."}
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={() => handleClose(false)} color="var(--grey-color)">
+                      Cancel
+                    </Button>
+                    <Button onClick={() => handleClose(true)} autoFocus color="error">
+                      Delete
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </div>
             </div>
           </div>
