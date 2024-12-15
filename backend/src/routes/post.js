@@ -12,7 +12,7 @@ router.get("/posts", async (req, res) => {
       JOIN Users ON Posts.AuthorID = Users.UserID
       JOIN TagsOfPost ON Posts.PostID = TagsOfPost.PostID
       JOIN Tags ON TagsOfPost.TagID = Tags.TagID
-      GROUP BY Posts.PostID, Users.UserID` //Truy cập mảng topics thông qua array_agg với mỗi post.
+      GROUP BY Posts.PostID, Users.UserID` //Truy cập mảng wtopics thông qua array_agg với mỗi post.
     );
     res.send(result.rows);
   } catch (error) {

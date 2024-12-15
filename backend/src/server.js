@@ -7,6 +7,7 @@ import passport from "./config/passport.js";
 import authRoutes from "./routes/auth.js";
 import postRoutes from "./routes/post.js";
 import uploadRoutes from "./routes/upload.js";
+import mycollection from "./routes/mycollection.js";
 import { fileURLToPath } from "url";
 import path from "path";
 
@@ -33,6 +34,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api", authRoutes);
 app.use("/api", postRoutes);
 app.use("/api", uploadRoutes);
+app.use("/api", mycollection);
 
 //chạy server
 app.listen(port, () => {

@@ -1,65 +1,81 @@
-function CollectionAlbum() {
+import { useEffect, useState } from "react";
+import { assets } from "../assets/assets";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
+import axios from "axios";
+
+function CollectionAlbum(Props) {
+  const [post, setPost] = useState([]);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/mycollection/${Props.type}`, {
+          withCredentials: true,
+        });
+        setPost(response.data);
+      } catch (error) {
+        console.log("Error fetching posts", error);
+      }
+    };
+    fetchPosts();
+  }, [Props.type]);
+
   return (
-    <div className="row mb-2">
-      <div className="col-md-6">
-        <div className="row g-0 border rounded overflow-hidden flex-md-row shadow-sm h-md-250 position-relative">
-          <div className="col-auto d-none d-lg-block">
-            <svg
-              className="bd-placeholder-img"
-              width="200"
-              height="250"
-              xmlns="http://www.w3.org/2000/svg"
-              role="img"
-              preserveAspectRatio="xMidYMid slice"
-              focusable="false"
+    <div className="container my-3 py-3">
+      <h3>{Props.type === "mypost" ? "My Posts" : "My Saved Posts"}</h3>
+      <div className="row mb-2">
+        {post.map((post) => (
+          <div className="col-md-6 mb-3" key={post.postid}>
+            <div
+              className="row g-0 border rounded overflow-hidden flex-md-row shadow-sm h-md-250 position-relative"
+              style={{ alignItem: "stretch", flexWrap: "nowrap" }}
             >
-              <title>Placeholder</title>
-              <rect width="100%" height="100%" fill="#55595c"></rect>
-              <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                This is banner
-              </text>
-            </svg>
+              <div className="col-auto d-none d-lg-block" style={{ height: "250px", width: "200px" }}>
+                <img
+                  alt="Banner"
+                  className="bd-placeholder-img"
+                  style={{ height: "100%", width: "100%", objectFit: "cover" }}
+                  src={post.bannerimageurl || assets.defaultthumbnail}
+                />
+              </div>
+              <div className="col d-flex flex-column position-static p-4 " style={{ height: "100%" }}>
+                <strong className="d-inline-block mb-2 text-primary-emphasis">{post.username}</strong>
+                <h3
+                  className="mb-0"
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    wordWrap: "break-word",
+                    display: "-webkit-box",
+                    WebkitLineClamp: "2",
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
+                  {post.title}
+                </h3>
+                <div className="mb-1 text-body-secondary">Date</div>
+                <p
+                  className="card-text mb-auto"
+                  style={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: "2",
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  {post.content}
+                </p>
+              </div>
+              <div id="postModification" className="position-absolute bottom-0 end-0 p-2 d-flex justify-content-end">
+                <Button color="var(--dark-hover-color)">
+                  <DeleteIcon />
+                </Button>
+              </div>
+            </div>
           </div>
-          <div className="col d-flex flex-column position-static p-4">
-            <strong className="d-inline-block mb-2 text-primary-emphasis">I dont know</strong>
-            <h3 className="mb-0">This is title</h3>
-            <div className="mb-1 text-body-secondary">This is date</div>
-            <p className="card-text mb-auto">Description</p>
-            <a href="#" className="icon-link gap-1 icon-link-hover stretched-link">
-              delete post
-            </a>
-          </div>
-        </div>
-      </div>
-      <div className="col-md-6">
-        <div className="row g-0 border rounded overflow-hidden flex-md-row shadow-sm h-md-250 position-relative">
-          <div className="col-auto d-none d-lg-block">
-            <svg
-              className="bd-placeholder-img"
-              width="200"
-              height="250"
-              xmlns="http://www.w3.org/2000/svg"
-              role="img"
-              preserveAspectRatio="xMidYMid slice"
-              focusable="false"
-            >
-              <title>Placeholder</title>
-              <rect width="100%" height="100%" fill="#55595c"></rect>
-              <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                This is banner
-              </text>
-            </svg>
-          </div>
-          <div className="col d-flex flex-column position-static p-4">
-            <strong className="d-inline-block mb-2 text-primary-emphasis">I dont know</strong>
-            <h3 className="mb-0">This is title</h3>
-            <div className="mb-1 text-body-secondary">This is date</div>
-            <p className="card-text mb-auto">Description</p>
-            <a href="#" className="icon-link gap-1 icon-link-hover stretched-link">
-              delete post
-            </a>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );
