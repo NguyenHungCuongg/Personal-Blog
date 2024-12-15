@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Blog from "./pages/Blog";
 import Register from "./pages/Register";
 import ViewBlog from "./pages/ViewBlog";
+import MyCollection from "./pages/MyCollection";
 import Navbar from "./components/Navbar";
 import CreateBlog from "./pages/CreateBlog";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -80,6 +81,7 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/createblog" element={<CreateBlog />} />
                 <Route path="/blog/:postId" element={<ViewBlog />} />
+                <Route path="/mycollection" element={<MyCollection />} />
               </Routes>
               <Footer />
             </div>

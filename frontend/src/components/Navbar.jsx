@@ -69,8 +69,14 @@ function Navbar() {
   };
 
   const handleMyCollection = async () => {
-    console.log("Hello");
-    return;
+    try {
+      const response = await axios.get("http://localhost:3000/api/mycollection", { withCredentials: true });
+      if (response.data.success) {
+        navigate("/mycollection");
+      }
+    } catch (err) {
+      console.log("Error navigating to My Collection:", err);
+    }
   };
 
   const [checked, setChecked] = React.useState(false);
