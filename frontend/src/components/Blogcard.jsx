@@ -13,6 +13,7 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import { convertDateToString } from "../../../backend/src/helpers/convertDateToString";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function Blogcard(Props) {
@@ -50,7 +51,7 @@ function Blogcard(Props) {
           />
         }
         title={post.username}
-        subheader={new Date(post.postcreatedat).toLocaleDateString()}
+        subheader={convertDateToString(post.postcreatedat)}
         sx={{
           "& .MuiCardHeader-title": {
             fontFamily: "Montserrat",

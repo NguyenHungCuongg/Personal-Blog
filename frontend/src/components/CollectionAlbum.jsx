@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { assets } from "../assets/assets";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
+import { convertDateToString } from "../../../backend/src/helpers/convertDateToString";
 import axios from "axios";
 
 function CollectionAlbum(Props) {
@@ -53,7 +54,7 @@ function CollectionAlbum(Props) {
                 >
                   {post.title}
                 </h3>
-                <div className="mb-1 text-body-secondary">Date</div>
+                <div className="mb-1 text-body-secondary">{convertDateToString(post.postcreatedat)}</div>
                 <p
                   className="card-text mb-auto"
                   style={{
