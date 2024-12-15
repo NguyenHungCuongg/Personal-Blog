@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { assets } from "../assets/assets";
+import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import { convertDateToString } from "../../../backend/src/helpers/convertDateToString";
@@ -32,28 +33,32 @@ function CollectionAlbum(Props) {
               style={{ alignItem: "stretch", flexWrap: "nowrap" }}
             >
               <div className="col-auto d-none d-lg-block" style={{ height: "250px", width: "200px" }}>
-                <img
-                  alt="Banner"
-                  className="bd-placeholder-img"
-                  style={{ height: "100%", width: "100%", objectFit: "cover" }}
-                  src={post.bannerimageurl || assets.defaultthumbnail}
-                />
+                <Link to={`/blog/${post.postid}`} style={{ textDecoration: "none" }}>
+                  <img
+                    alt="Banner"
+                    className="bd-placeholder-img"
+                    style={{ height: "100%", width: "100%", objectFit: "cover" }}
+                    src={post.bannerimageurl || assets.defaultthumbnail}
+                  />
+                </Link>
               </div>
               <div className="col d-flex flex-column position-static p-4 " style={{ height: "100%" }}>
                 <strong className="d-inline-block mb-2 text-primary-emphasis">{post.username}</strong>
-                <h3
-                  className="mb-0"
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    wordWrap: "break-word",
-                    display: "-webkit-box",
-                    WebkitLineClamp: "2",
-                    WebkitBoxOrient: "vertical",
-                  }}
-                >
-                  {post.title}
-                </h3>
+                <Link to={`/blog/${post.postid}`} style={{ textDecoration: "none" }}>
+                  <h3
+                    className="mb-0"
+                    style={{
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      wordWrap: "break-word",
+                      display: "-webkit-box",
+                      WebkitLineClamp: "2",
+                      WebkitBoxOrient: "vertical",
+                    }}
+                  >
+                    {post.title}
+                  </h3>
+                </Link>
                 <div className="mb-1 text-body-secondary">{convertDateToString(post.postcreatedat)}</div>
                 <p
                   className="card-text mb-auto"
