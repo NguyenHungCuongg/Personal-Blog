@@ -1,3 +1,4 @@
+import { useState } from "react";
 import BlogAlbum from "../components/BlogAlbum";
 import TagFilter from "../components/TagFilter";
 import DeviderLine from "../components/DeviderLine";
@@ -8,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function Blog() {
   const isSmallScreen = useMediaQuery("(max-width:768px)");
+  const [topics, setTopics] = useState([]);
   return (
     <div className="container mt-5" style={{ paddingBottom: "100px" }}>
       <div id="blogHeaderSection" className="py-5">
@@ -31,7 +33,14 @@ function Blog() {
           <SearchBar />
         </div>
         <div className={`${isSmallScreen ? "" : "col-4"}`}>
-          <TagFilter animatedLabel={true} placeholder="Add more filters" />
+          <TagFilter
+            animatedLabel={true}
+            placeholder="Add more filters"
+            value={topics}
+            onChange={(value) => {
+              setTopics(value);
+            }}
+          />
         </div>
       </div>
       <DeviderLine />
