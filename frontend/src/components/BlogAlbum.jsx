@@ -18,19 +18,17 @@ function BlogAlbum() {
     fetchPosts();
   }, []);
 
-  return (
+  return posts.length === 0 ? (
+    <div className="container text-center">
+      <img src={assets.emptycollection} alt="Empty Collection" style={{ width: "100%" }} />
+    </div>
+  ) : (
     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      {posts.length === 0 ? (
-        <div className="text-center">
-          <img src={assets.emptycollection} alt="Empty Collection" style={{ width: "100%" }} />
+      {posts.map((post) => (
+        <div className="col" key={post.postid}>
+          <Blogcard post={post} />
         </div>
-      ) : (
-        posts.map((post) => (
-          <div className="col" key={post.postid}>
-            <Blogcard post={post} />
-          </div>
-        ))
-      )}
+      ))}
     </div>
   );
 }

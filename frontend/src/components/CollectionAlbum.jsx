@@ -63,7 +63,7 @@ function CollectionAlbum(Props) {
       <hr className="mb-3" />
       <div className="row mb-2">
         {post.length === 0 ? (
-          <div className="text-center">
+          <div className="container text-center">
             <img src={assets.emptycollection} alt="Empty Collection" style={{ width: "100%" }} />
           </div>
         ) : (
