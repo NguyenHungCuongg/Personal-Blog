@@ -5,6 +5,7 @@ import defaultthumbnail from "./defaultthumbnail_img.png";
 import logo_img from "./cuongnguyen_logo.jpg";
 import defaultbanner from "./defaultbanner_img.jpg";
 import favicon_logo from "./favicon-16x16.png";
+import emptycollection from "./emptycollection_img.png";
 
 export const assets = {
   fblogo_img,
@@ -14,4 +15,5 @@ export const assets = {
   defaultthumbnail,
   defaultbanner,
   favicon_logo,
+  emptycollection,
 };

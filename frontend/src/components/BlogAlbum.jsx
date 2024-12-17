@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { assets } from "../assets/assets";
 import Blogcard from "../components/Blogcard";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -19,11 +20,17 @@ function BlogAlbum() {
 
   return (
     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      {posts.map((post) => (
-        <div className="col" key={post.postid}>
-          <Blogcard post={post} />
+      {posts.length === 0 ? (
+        <div className="text-center">
+          <img src={assets.emptycollection} alt="Empty Collection" style={{ width: "100%" }} />
         </div>
-      ))}
+      ) : (
+        posts.map((post) => (
+          <div className="col" key={post.postid}>
+            <Blogcard post={post} />
+          </div>
+        ))
+      )}
     </div>
   );
 }
