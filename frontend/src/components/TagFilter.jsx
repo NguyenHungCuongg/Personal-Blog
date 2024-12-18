@@ -15,9 +15,10 @@ function TagFilter(Props) {
           id="multiple-limit-tags"
           options={blogTags}
           getOptionLabel={(option) => option.displayName}
-          renderInput={(params) => <TextField {...params} label="Topics" placeholder="Add more filters" />}
-          sx={{ maxWidth: "auto" }}
+          value={blogTags.filter((tag) => Props.value.includes(tag.tagName))} //Thay đổi giá trị hiển thị khi chọn tag
           onChange={handleChange}
+          renderInput={(params) => <TextField {...params} label="Topics" placeholder={Props.placeholder} />}
+          sx={{ maxWidth: "auto" }}
         />
       ) : (
         <div className="d-flex flex-column gap-2">
@@ -27,9 +28,10 @@ function TagFilter(Props) {
             id="multiple-limit-tags"
             options={blogTags}
             getOptionLabel={(option) => option.displayName}
+            value={blogTags.filter((tag) => Props.value.includes(tag.tagName))}
+            onChange={handleChange}
             renderInput={(params) => <TextField {...params} placeholder={Props.placeholder} />}
             sx={{ maxWidth: "auto" }}
-            onChange={handleChange}
           />
         </div>
       )}

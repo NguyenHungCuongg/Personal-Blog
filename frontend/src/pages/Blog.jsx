@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import BlogAlbum from "../components/BlogAlbum";
 import TagFilter from "../components/TagFilter";
 import DeviderLine from "../components/DeviderLine";
@@ -11,6 +12,14 @@ function Blog() {
   const isSmallScreen = useMediaQuery("(max-width:768px)");
   const [topics, setTopics] = useState([]);
   const [search, setSearch] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && location.state.topic) {
+      setTopics([location.state.topic]);
+    }
+  }, [location.state]);
+
   return (
     <div className="container mt-5" style={{ paddingBottom: "100px" }}>
       <div id="blogHeaderSection" className="py-5">
