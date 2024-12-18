@@ -10,6 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function Blog() {
   const isSmallScreen = useMediaQuery("(max-width:768px)");
   const [topics, setTopics] = useState([]);
+  const [search, setSearch] = useState("");
   return (
     <div className="container mt-5" style={{ paddingBottom: "100px" }}>
       <div id="blogHeaderSection" className="py-5">
@@ -30,7 +31,12 @@ function Blog() {
         className={`d-flex row align-items-center ${isSmallScreen ? "flex-column gap-2" : ""}`}
       >
         <div className={`${isSmallScreen ? "" : "col-8"}`}>
-          <SearchBar />
+          <SearchBar
+            value={search}
+            onChange={(value) => {
+              setSearch(value);
+            }}
+          />
         </div>
         <div className={`${isSmallScreen ? "" : "col-4"}`}>
           <TagFilter
@@ -45,7 +51,7 @@ function Blog() {
       </div>
       <DeviderLine />
       <div className="py-5">
-        <BlogAlbum />
+        <BlogAlbum search={search} topics={topics} />
       </div>
     </div>
   );

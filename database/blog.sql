@@ -16,6 +16,7 @@ CREATE TABLE Posts (
     Content TEXT NOT NULL,
     BannerImageURL VARCHAR(255),
     PostCreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    SearchVector TSVECTOR
 );
 
 CREATE TABLE Tags (
@@ -57,3 +58,10 @@ VALUES
     ('Entertainment'),
     ('Education')
 
+
+-----------------Cập nhật SearchVector-----------------
+UPDATE Posts
+SET SearchVector = to_tsvector('english',Title || ' ' || Content);
+
+-----------------Tạo index cho SearchVector-----------------
+CREATE INDEX idx_search_vector ON Posts USING gin(SearchVector);

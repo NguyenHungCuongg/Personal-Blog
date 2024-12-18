@@ -4,19 +4,23 @@ import { assets } from "../assets/assets";
 import Blogcard from "../components/Blogcard";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function BlogAlbum() {
+function BlogAlbum(Props) {
   const [posts, setPosts] = useState([]);
+  const search = Props.search;
+  const topics = Props.topics;
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/posts");
+        const response = await axios.get("http://localhost:3000/api/posts", {
+          params: { search, topics },
+        });
         setPosts(response.data);
       } catch (error) {
         console.log("Error fetching posts", error);
       }
     };
     fetchPosts();
-  }, []);
+  }, [search, topics]); //Chỉ chạy khi search hoặc topics thay đổi
 
   return posts.length === 0 ? (
     <div className="container text-center">
