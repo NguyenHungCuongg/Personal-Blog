@@ -46,9 +46,6 @@ router.get("/posts", async (req, res) => {
     query += ` GROUP BY Posts.PostID, Users.UserID`; //Truy cập mảng topics thông qua array_agg với mỗi post.
     //Đến bước này(sau khi xét qua các điều kiện), query sẽ trở thành một câu truy vấn SQL hoàn chỉnh
 
-    console.log(params); //debugging log
-    console.log(query); //debugging log
-
     const result = await db.query(query, params); //thực thi câu truy vấn SQL
     res.send(result.rows);
   } catch (error) {
