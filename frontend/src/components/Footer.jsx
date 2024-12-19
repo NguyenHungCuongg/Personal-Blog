@@ -1,6 +1,7 @@
 import XIcon from "@mui/icons-material/X";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -95,6 +96,11 @@ function Footer() {
       >
         <p>© 2024 Company, Inc. All rights reserved.</p>
         <ul className="list-unstyled d-flex gap-3">
+          <li className="ms-3">
+            <a href="https://github.com/NguyenHungCuongg" target="_blank">
+              <GitHubIcon />
+            </a>
+          </li>
           <li className="ms-3">
             <a href="https://x.com/Whisper30554598" target="_blank">
               <XIcon />

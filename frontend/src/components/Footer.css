@@ -39,7 +39,8 @@
   color: var(--dark-color) !important;
 }
 
-h5 {
+form h5,
+.col-6 h5 {
   font-weight: 700;
   font-family: var(--content-font) !important;
   color: var(--dark-hover-color) !important;
