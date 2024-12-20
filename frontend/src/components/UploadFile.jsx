@@ -8,7 +8,7 @@ const UploadFile = forwardRef((Props, ref) => {
       return;
     }
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("image", file);
     try {
       const result = await axios.post("http://localhost:3000/api/upload", formData);
       console.log(result.data);

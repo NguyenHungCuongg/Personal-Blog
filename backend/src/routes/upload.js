@@ -3,6 +3,7 @@ import multer from "multer";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { validateMIMEType } from "validate-image-type";
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const uploadDir = path.join(__dirname, "../uploads/");
 if (!fs.existsSync(uploadDir)) {
+  //nếu thư mục không tồn tại thì tạo mới
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
@@ -32,16 +34,29 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("/upload", upload.single("file"), (req, res) => {
-  if (!req.file) {
-    console.log("No file received");
-    return res.status(400).send({ message: "No file uploaded" });
-  }
-  console.log("File received");
-  console.log(req.file);
-  const fileUrl = `http://localhost:3000/uploads/${req.file.filename}`;
-  console.log(fileUrl);
-  res.send({ fileUrl });
-});
+const asyncWrapper = (fn) => {
+  return (req, res, next) => {
+    return fn(req, res, next).catch(next);
+  };
+};
+
+router.post(
+  "/upload",
+  upload.single("image"),
+  asyncWrapper(async (req, res) => {
+    const validationResult = await validateMIMEType(req.file.path, {
+      originalFilename: req.file.originalname,
+      allowMimeTypes: ["image/jpeg", "image/gif", "image/png", "image/svg+xml"],
+    });
+    if (!validationResult.ok) {
+      console.log("No file received"); //Sau này ta sẽ thay bằng các alert hoặc thông báo lỗi khác
+      return res.status(400).send({ message: "No file uploaded" });
+    }
+    console.log("File received");
+    const fileUrl = `http://localhost:3000/uploads/${req.file.filename}`;
+    console.log(fileUrl);
+    res.send({ fileUrl });
+  })
+);
 
 export default router;
