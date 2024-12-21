@@ -87,6 +87,7 @@ function CreateBlogForm() {
         <h1 className="fw-bold pt-2">Create Blog Post</h1>
         <TextInput
           error={titleError}
+          helperText="Please enter a title"
           id={titleError ? "outlined-error fullWidth" : "outlined-basic fullWidth"}
           label="Title"
           animatedLabel={false}
@@ -98,6 +99,7 @@ function CreateBlogForm() {
           }}
         />
         <TagFilter
+          error={topicsError}
           animatedLabel={false}
           label="Topics"
           placeholder="Add post topics"
@@ -111,6 +113,7 @@ function CreateBlogForm() {
         <DocumentInput
           label="Content"
           error={contentError}
+          helperText="Please enter content"
           value={contentError ? "" : content}
           onChange={(value) => {
             setContent(value);

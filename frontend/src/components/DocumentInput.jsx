@@ -11,6 +11,7 @@ function DocumentInput(Props) {
       <TextField
         error={Props.error}
         value={Props.value}
+        helperText={Props.error ? Props.helperText : ""}
         id="outlined-multiline-static"
         multiline
         rows={10}

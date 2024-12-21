@@ -17,7 +17,15 @@ function TagFilter(Props) {
           getOptionLabel={(option) => option.displayName}
           value={blogTags.filter((tag) => Props.value.includes(tag.tagName))} //Thay đổi giá trị hiển thị khi chọn tag
           onChange={handleChange}
-          renderInput={(params) => <TextField {...params} label="Topics" placeholder={Props.placeholder} />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              error={Props.error}
+              helperText={Props.error ? "please enter topics" : ""}
+              label="Topics"
+              placeholder={Props.placeholder}
+            />
+          )}
           sx={{ maxWidth: "auto" }}
         />
       ) : (
@@ -30,7 +38,14 @@ function TagFilter(Props) {
             getOptionLabel={(option) => option.displayName}
             value={blogTags.filter((tag) => Props.value.includes(tag.tagName))}
             onChange={handleChange}
-            renderInput={(params) => <TextField {...params} placeholder={Props.placeholder} />}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                error={Props.error}
+                helperText={Props.error ? "please enter topics" : ""}
+                placeholder={Props.placeholder}
+              />
+            )}
             sx={{ maxWidth: "auto" }}
           />
         </div>

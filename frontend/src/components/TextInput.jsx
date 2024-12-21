@@ -8,6 +8,7 @@ function TextInput(Props) {
           onChange={Props.onChange}
           id={Props.id}
           error={Props.error}
+          helperText={Props.error ? Props.helperText : ""}
           value={Props.value}
           fullWidth
           label={Props.label}
@@ -18,6 +19,7 @@ function TextInput(Props) {
           <TextField
             onChange={Props.onChange}
             id={Props.id}
+            helperText={Props.error ? Props.helperText : ""}
             error={Props.error}
             value={Props.value}
             fullWidth
