@@ -30,7 +30,7 @@ const UploadFile = forwardRef((Props, ref) => {
   return (
     <div className="d-flex flex-column gap-2">
       <label className="fw-semibold fs-4">{Props.label}</label>
-      <input type="file" onChange={handleChange} />
+      <input type="file" accept="image/*" onChange={handleChange} />
     </div>
   );
 });
