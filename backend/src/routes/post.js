@@ -27,9 +27,14 @@ router.get("/posts", async (req, res) => {
     //mảng params để chứa các tham số truyền vào câu truy vấn SQL
     const params = [];
     if (search) {
+      const normalizedSearch = search
+        .split(" ")
+        .map((word) => word.trim())
+        .filter((word) => word.length > 0)
+        .join(" & ");
       //nếu thanh search có giá trị
-      query += ` AND Posts.SearchVector @@ plainto_tsquery($1)`; //nối tiếp câu query ở trên (đảm bảo phải có dấu cách trước chữ AND)
-      params.push(search); //thêm tham số vào mảng params
+      query += ` AND Posts.SearchVector @@ to_tsquery($1)`; //nối tiếp câu query ở trên (đảm bảo phải có dấu cách trước chữ AND)
+      params.push(normalizedSearch); //thêm tham số vào mảng params
     }
     if (topics && topics.length > 0) {
       //đảm bảo phải có dấu cách trước chữ AND
@@ -45,7 +50,6 @@ router.get("/posts", async (req, res) => {
 
     query += ` GROUP BY Posts.PostID, Users.UserID`; //Truy cập mảng topics thông qua array_agg với mỗi post.
     //Đến bước này(sau khi xét qua các điều kiện), query sẽ trở thành một câu truy vấn SQL hoàn chỉnh
-
     const result = await db.query(query, params); //thực thi câu truy vấn SQL
     res.send(result.rows);
   } catch (error) {
@@ -80,7 +84,6 @@ router.post("/posts", async (req, res) => {
   const title = req.body.title;
   const topics = req.body.topics;
   const bannerImageUrl = req.body.bannerImageUrl;
-  console.log("Gia tri cua bannerImageUrl trong API" + bannerImageUrl);
   const content = req.body.content;
   const authorID = req.body.user.userid;
   try {
@@ -89,6 +92,10 @@ router.post("/posts", async (req, res) => {
       [title, content, authorID, bannerImageUrl]
     );
     const postID = postResult.rows[0].postid;
+    await db.query(
+      `UPDATE Posts SET SearchVector = to_tsvector('english', Title || ' ' || Content) WHERE PostID = $1`,
+      [postID]
+    );
     for (const topic of topics) {
       const tagResult = await db.query(`SELECT TagID FROM Tags WHERE TagName = $1`, [topic]);
       if (tagResult.rows.length > 0) {
