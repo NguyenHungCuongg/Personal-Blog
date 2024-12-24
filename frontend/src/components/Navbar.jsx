@@ -16,6 +16,9 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import PuffLoader from "react-spinners/PuffLoader";
 
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
@@ -26,6 +29,14 @@ function Navbar() {
   const location = useLocation(); //Lấy location hiện tại
   const { isAuthenticated, user, loading, setAuthState } = React.useContext(AuthContext); //isAuthenticated, user, loading là ...authState (các giá trị của authState)
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+  const handleCloseError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   React.useEffect(() => {
     console.log("useEffect running");
@@ -63,6 +74,7 @@ function Navbar() {
         navigate("/");
       }
     } catch (err) {
+      setOpenSnackbar(true);
       console.log("Error logging out user:", err);
     }
     setAnchorElUser(null);
@@ -98,6 +110,14 @@ function Navbar() {
       id="navBarContainer"
       className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
     >
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openSnackbar}
+        autoHideDuration={2000}
+        onClose={handleCloseError}
+      >
+        <Alert severity="error">Something went wrong. Please try again later.</Alert>
+      </Snackbar>
       {isSmallScreen && (
         <Button onClick={handleClick} id="menuButton" variant="text">
           <MenuIcon />

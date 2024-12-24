@@ -4,6 +4,8 @@ import TextInput from "./TextInput";
 import TagFilter from "./TagFilter";
 import UploadFile from "./UploadFile";
 import DocumentInput from "./DocumentInput";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import AuthContext from "../context/AuthContext";
@@ -14,12 +16,20 @@ function CreateBlogForm() {
   const [title, setTitle] = useState("");
   const [topics, setTopics] = useState([]);
   const [content, setContent] = useState("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const [titleError, setTitleError] = useState(false);
   const [topicsError, setTopicsError] = useState(false);
   const [contentError, setContentError] = useState(false);
 
   const fileInput = useRef(null);
+
+  const handleCloseError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,15 +79,25 @@ function CreateBlogForm() {
         console.log(response.data.message);
         navigate("/blog");
       } else {
+        setOpenSnackbar(true);
         console.log(response.data.message);
       }
     } catch (error) {
+      setOpenSnackbar(true);
       console.log("Error submitting post:", error);
     }
   };
 
   return (
     <div className="container d-flex p-3 px-5">
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openSnackbar}
+        autoHideDuration={2000}
+        onClose={handleCloseError}
+      >
+        <Alert severity="error">Something went wrong. Please try again later.</Alert>
+      </Snackbar>
       <form
         id="createBlogForm"
         className="container d-flex flex-column gap-4 rounded shadow-sm px-5 py-5"

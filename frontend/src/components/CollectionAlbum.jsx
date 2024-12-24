@@ -8,6 +8,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import { convertDateToString } from "../../../backend/src/helpers/convertDateToString";
 import axios from "axios";
 
@@ -15,6 +17,19 @@ function CollectionAlbum(Props) {
   const [post, setPost] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [open, setOpen] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleCloseError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
+  const handleClickOpen = (post) => {
+    setSelectedPost(post);
+    setOpen(true);
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -24,16 +39,12 @@ function CollectionAlbum(Props) {
         });
         setPost(response.data);
       } catch (error) {
+        setOpenSnackbar(true);
         console.log("Error fetching posts", error);
       }
     };
     fetchPosts();
   }, [Props.type]);
-
-  const handleClickOpen = (post) => {
-    setSelectedPost(post);
-    setOpen(true);
-  };
 
   const handleClose = async (confirm) => {
     if (!selectedPost) return;
@@ -51,6 +62,7 @@ function CollectionAlbum(Props) {
           setPost(newPost);
         }
       } catch (error) {
+        setOpenSnackbar(true);
         console.log("Error deleting post", error);
       }
     }
@@ -59,6 +71,14 @@ function CollectionAlbum(Props) {
 
   return (
     <div className="container my-3 py-3">
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openSnackbar}
+        autoHideDuration={2000}
+        onClose={handleCloseError}
+      >
+        <Alert severity="error">Something went wrong. Please try again later.</Alert>
+      </Snackbar>
       <h1 className="mb-4 fw-semibold">{Props.type === "mypost" ? "My Post" : "My Saved Posts"}</h1>
       <hr className="mb-3" />
       <div className="row mb-2">
