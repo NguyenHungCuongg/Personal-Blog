@@ -7,7 +7,6 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import FormHelperText from "@mui/material/FormHelperText";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function PasswordInputBar(Props) {
   const [showPassword, setShowPassword] = React.useState(false);

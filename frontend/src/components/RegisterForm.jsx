@@ -7,7 +7,6 @@ import CheckboxWithLabel from "./CheckboxWithLabel";
 import GeneralSnackBar from "./GeneralSnackBar";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function RegisterForm() {
   const navigate = useNavigate();

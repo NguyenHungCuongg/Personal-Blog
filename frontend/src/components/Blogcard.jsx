@@ -14,7 +14,6 @@ import Typography from "@mui/material/Typography";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { convertDateToString } from "../../../backend/src/helpers/convertDateToString";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function Blogcard(Props) {
   const { post } = Props;

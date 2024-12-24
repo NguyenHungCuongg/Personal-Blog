@@ -2,7 +2,6 @@ import Button from "@mui/material/Button";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import TextField from "@mui/material/TextField";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function ContactForm() {
   return (

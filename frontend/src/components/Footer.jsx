@@ -4,7 +4,6 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./Footer.css";
 
 function Footer() {

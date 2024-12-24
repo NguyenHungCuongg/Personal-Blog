@@ -1,5 +1,4 @@
 import CreateBlogForm from "../components/CreateBlogForm";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function CreateBlog() {
   return (

@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function TagsList(Props) {
   const navigate = useNavigate();

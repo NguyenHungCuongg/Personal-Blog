@@ -1,5 +1,4 @@
 import Divider from "@mui/material/Divider";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function DeviderLine() {
   return (

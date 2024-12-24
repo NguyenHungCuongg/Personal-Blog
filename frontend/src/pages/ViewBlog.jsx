@@ -4,13 +4,23 @@ import { format } from "date-fns";
 import BlogHeader from "../components/BlogHeader";
 import BannerImage from "../components/BannerImage";
 import BlogContent from "../components/BlogContent";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import axios from "axios";
 import PuffLoader from "react-spinners/PuffLoader";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function ViewBlog() {
   const { postId } = useParams(); //truy xuat postID tu URL động bên Routes của App.jsx
   const [post, setPost] = useState(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const handleCloseError = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -45,6 +55,14 @@ function ViewBlog() {
         marginBottom: "3rem",
       }}
     >
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openSnackbar}
+        autoHideDuration={2000}
+        onClose={handleCloseError}
+      >
+        <Alert severity="error">Something went wrong. Please try again later.</Alert>
+      </Snackbar>
       <BannerImage bannerImageUrl={post.bannerimageurl} />
       <BlogHeader title={post.title} topics={post.topics} createAt={formattedDate} username={post.username} />
       <BlogContent content={post.content} />

@@ -8,7 +8,6 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import GeneralSnackBar from "./GeneralSnackBar";
 import axios from "axios";
 import AuthContext from "../context/AuthContext";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function LoginForm() {
   const navigate = useNavigate();

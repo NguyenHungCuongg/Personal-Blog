@@ -2,7 +2,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import TagsList from "./TagsList";
 import ByUser from "../components/ByUser";
 import CreateAt from "./CreateAt";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function BlogHeader(Props) {
   const isSmallScreen = useMediaQuery("(max-width:768px)");

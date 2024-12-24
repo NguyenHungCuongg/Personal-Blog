@@ -4,7 +4,6 @@ import { assets } from "../assets/assets";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import Blogcard from "../components/Blogcard";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function BlogAlbum(Props) {
   const [posts, setPosts] = useState([]);

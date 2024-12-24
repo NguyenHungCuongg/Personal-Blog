@@ -2,7 +2,6 @@ import { assets } from "../assets/assets";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Button from "@mui/material/Button";
 import HeaderText from "../components/HeaderText";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const Home = () => {
   const isSmallScreen = useMediaQuery("(max-width:768px)");

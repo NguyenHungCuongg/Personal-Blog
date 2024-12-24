@@ -20,7 +20,6 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./Navbar.css";
 const settings = ["My Collection", "Logout"];
 

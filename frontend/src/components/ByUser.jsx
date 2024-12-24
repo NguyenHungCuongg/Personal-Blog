@@ -1,4 +1,3 @@
-import "bootstrap/dist/css/bootstrap.min.css";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 function ByUser(Props) {
   return (

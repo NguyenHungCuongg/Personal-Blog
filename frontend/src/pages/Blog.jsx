@@ -6,7 +6,6 @@ import DeviderLine from "../components/DeviderLine";
 import SearchBar from "../components/SearchBar";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import HeaderText from "../components/HeaderText";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function Blog() {
   const isSmallScreen = useMediaQuery("(max-width:768px)");
