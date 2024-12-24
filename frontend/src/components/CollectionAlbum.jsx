@@ -91,7 +91,13 @@ function CollectionAlbum(Props) {
             <div className="col-md-6 mb-3" key={post.postid}>
               <div
                 className="row g-0 border rounded overflow-hidden flex-md-row shadow-sm h-md-250 position-relative"
-                style={{ alignItem: "stretch", flexWrap: "nowrap" }}
+                style={{
+                  alignItem: "stretch",
+                  flexWrap: "nowrap",
+                  display: "flex",
+                  height: "100%",
+                  minHeight: "250px",
+                }}
               >
                 <div className="col-auto d-none d-lg-block" style={{ height: "250px", width: "200px" }}>
                   <Link to={`/blog/${post.postid}`} style={{ textDecoration: "none" }}>
