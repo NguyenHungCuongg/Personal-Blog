@@ -29,6 +29,7 @@ function Navbar() {
   const { isAuthenticated, user, loading, setAuthState } = React.useContext(AuthContext); //isAuthenticated, user, loading là ...authState (các giá trị của authState)
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [logoutError, setLogoutError] = React.useState(false);
 
   const handleCloseError = (event, reason) => {
     if (reason === "clickaway") {
@@ -38,15 +39,10 @@ function Navbar() {
   };
 
   React.useEffect(() => {
-    console.log("useEffect running");
     const currentPath = location.pathname; //Lấy đường dẫn hiện tại
-    console.log("Current path:", currentPath); //debugging log
-
     setTimeout(() => {
       const navLinks = document.querySelectorAll("#navBarTags a"); //Lấy tất cả thẻ a trong #navBarTags
-      console.log("Nav links:", navLinks); //debugging log
       navLinks.forEach((link) => {
-        console.log("Link href:", link.getAttribute("href")); //debugging log
         //Duyệt qua từng thẻ a, kiểm tra xem href của thẻ a có bằng với đường dẫn hiện tại không
         if (link.getAttribute("href") === currentPath) {
           //Nếu bằng thì thêm class active vào thẻ a đó
@@ -70,10 +66,12 @@ function Navbar() {
       const response = await axios.get("http://localhost:3000/api/logout", { withCredentials: true });
       if (response.data.success) {
         setAuthState({ isAuthenticated: false, user: null, loading: false });
+        setOpenSnackbar(true);
         navigate("/");
       }
     } catch (err) {
       setOpenSnackbar(true);
+      setLogoutError(true);
       console.log("Error logging out user:", err);
     }
     setAnchorElUser(null);
@@ -103,7 +101,6 @@ function Navbar() {
     );
   }
 
-  console.log("Navbar state:", { isAuthenticated, loading }); //debugging log
   return (
     <header
       id="navBarContainer"
@@ -115,7 +112,9 @@ function Navbar() {
         autoHideDuration={2000}
         onClose={handleCloseError}
       >
-        <Alert severity="error">Something went wrong. Please try again later.</Alert>
+        <Alert severity={logoutError ? `error` : `success`}>
+          {logoutError ? `Error logging out!` : `Logout successful!`}
+        </Alert>
       </Snackbar>
       {isSmallScreen && (
         <Button onClick={handleClick} id="menuButton" variant="text">

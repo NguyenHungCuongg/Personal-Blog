@@ -20,7 +20,7 @@ const Home = () => {
         <div className="col-lg-7">
           <HeaderText
             title="Welcome to my homepage"
-            description="            Hi, I'm Cuong! Welcome to my personal blog where I share my thoughts and experiences on manga, art,
+            description="Hi, I'm Cuong! Welcome to my personal blog where I share my thoughts and experiences on manga, art,
             music, technology, and more. Stay tuned for insightful articles and updates."
             logo={true}
             titleClass="display-4 fw-bold text-body-emphasis lh-1 mb-3"
