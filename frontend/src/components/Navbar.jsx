@@ -181,9 +181,18 @@ function Navbar() {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                   >
-                    {settings.map((setting) => (
-                      <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                        <Typography onClick={handleLogout} sx={{ textAlign: "center" }}>
+                    {settings.map((setting, index, arr) => (
+                      <MenuItem
+                        key={setting}
+                        onClick={handleCloseUserMenu}
+                        style={{ borderBottom: index === arr.length - 1 ? "" : "1px solid var(--grey-color)" }}
+                      >
+                        <Typography
+                          onClick={
+                            setting === "Logout" ? handleLogout : setting === "My Collection" ? handleMyCollection : ""
+                          }
+                          sx={{ textAlign: "center" }}
+                        >
                           {setting}
                         </Typography>
                       </MenuItem>
