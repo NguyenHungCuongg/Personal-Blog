@@ -14,6 +14,11 @@ function BlogAlbum(Props) {
   const postPerPage = 9; // Số lượng bài viết hiển thị trên mỗi trang
   const [page, setPage] = useState(1);
 
+  // Tính toán số lượng bài viết hiển thị trên mỗi trang
+  const indexOfLastPost = page * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -38,11 +43,6 @@ function BlogAlbum(Props) {
     };
     fetchPosts();
   }, [search, topics]); //Chỉ chạy khi search hoặc topics thay đổi
-
-  // Tính toán số lượng bài viết hiển thị trên mỗi trang
-  const indexOfLastPost = page * postPerPage;
-  const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
   return currentPosts.length === 0 ? (
     <div className="container text-center">
