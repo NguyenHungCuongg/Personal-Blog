@@ -1,6 +1,6 @@
 # Ngăn không cho folder "uploads" được commit lên git
 uploads/
-/database/
+/database/*
 
 
 # Logs
