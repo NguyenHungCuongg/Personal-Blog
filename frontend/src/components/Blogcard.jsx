@@ -4,15 +4,13 @@ import { Link } from "react-router-dom";
 dùng để tạo link giữa các trang (giống với thẻ a trong html) nhưng được dùng với các Route của 
 react-router-dom (tức có thể đưa người dùng đến các trang trong App,jsx)
 */
-import Checkbox from "@mui/material/Checkbox";
+
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import { convertDateToString } from "../../../backend/src/helpers/convertDateToString";
 
 function Blogcard(Props) {
@@ -37,17 +35,6 @@ function Blogcard(Props) {
           <Avatar sx={{ bgcolor: "var(--main-color)" }} aria-label="recipe">
             {post.username ? post.username[0] : "UK"}
           </Avatar>
-        }
-        action={
-          <Checkbox
-            icon={<BookmarkBorderIcon />}
-            checkedIcon={<BookmarkIcon />}
-            sx={{
-              "&.Mui-checked": {
-                color: "secondary.main",
-              },
-            }}
-          />
         }
         title={post.username}
         subheader={convertDateToString(post.postcreatedat)}
