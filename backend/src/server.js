@@ -18,7 +18,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 //Setup các middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true })); //origin: "http://localhost:5173" là domain của frontend
+app.use(cors({ origin: "https://personal-blog-v1.onrender.com", credentials: true })); //origin: "http://localhost:5173" là domain của frontend
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(sessionMiddleware);
