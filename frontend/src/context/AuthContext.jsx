@@ -14,7 +14,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get("https://personal-blog-backend-ad0g.onrender.com/api/check-auth", { withCredentials: true });
+        const response = await axios.get("http://localhost:3000", {
+          withCredentials: true,
+        });
         setAuthState({
           isAuthenticated: response.data.isAuthenticated,
           user: response.data.user,
