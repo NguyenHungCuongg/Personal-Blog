@@ -26,23 +26,27 @@ const settings = ["My Collection", "Logout"];
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation(); //Lấy location hiện tại
-  const { isAuthenticated, user, loading, setAuthState } = React.useContext(AuthContext); //isAuthenticated, user, loading là ...authState (các giá trị của authState)
+  const { isAuthenticated, user, loading, justLoggedIn, justLoggedOut, setAuthState } = React.useContext(AuthContext); //isAuthenticated, user, loading là ...authState (các giá trị của authState)
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [snackbarMessage, setSnackbarMessage] = React.useState("");
   const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
 
   React.useEffect(() => {
-    if (isAuthenticated && user) {
+    if (justLoggedIn) {
       setSnackbarMessage("Login successful");
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
-    } else if (!isAuthenticated) {
+      setAuthState((prevState) => ({ ...prevState, justLoggedIn: false }));
+      //Nếu vừa mới đăng nhập thì hiển thị thông báo "Login successful" và set justLoggedIn thành false
+    } else if (justLoggedOut) {
       setSnackbarMessage("Logout successful");
-      setSnackbarSeverity("info");
+      setSnackbarSeverity("success");
       setOpenSnackbar(true);
+      setAuthState((prevState) => ({ ...prevState, justLoggedOut: false }));
+      //tương tự như trên
     }
-  }, [isAuthenticated, user]);
+  }, [justLoggedIn, justLoggedOut, setAuthState]);
 
   React.useEffect(() => {
     const currentPath = location.pathname; //Lấy đường dẫn hiện tại
@@ -68,7 +72,10 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
-  const handleCloseSnackbar = () => {
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return; // Ngăn chặn việc đóng khi người dùng click bên ngoài
+    }
     setOpenSnackbar(false);
   };
 
@@ -76,12 +83,22 @@ function Navbar() {
     try {
       const response = await axios.get("http://localhost:3000/api/logout", { withCredentials: true });
       if (response.data.success) {
-        setAuthState({ isAuthenticated: false, user: null, loading: false });
+        setAuthState((prevState) => ({
+          ...prevState,
+          isAuthenticated: false,
+          user: null,
+          loading: false,
+          justLoggedOut: true,
+        }));
+        setSnackbarMessage("Logout successful");
+        setSnackbarSeverity("info");
+        setOpenSnackbar(true);
         navigate("/");
       }
     } catch (err) {
-      setOpenSnackbar(true);
       setSnackbarMessage("An error occurred while logging out. Please try again.");
+      setSnackbarSeverity("error");
+      setOpenSnackbar(true);
       console.log("Error logging out user:", err);
     }
     setAnchorElUser(null);
@@ -116,7 +133,12 @@ function Navbar() {
       id="navBarContainer"
       className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
     >
-      <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={openSnackbar}
+        autoHideDuration={2000}
+        onClose={handleCloseSnackbar}
+      >
         <MuiAlert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: "100%" }}>
           {snackbarMessage}
         </MuiAlert>

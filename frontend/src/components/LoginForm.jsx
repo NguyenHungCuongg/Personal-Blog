@@ -25,11 +25,9 @@ function LoginForm() {
     if (location.search.includes("error=email-used")) {
       setErrorMessage("Email has already been used");
       setOpenSnackBar(true);
-      console.log("Email has already been used");
     } else if (location.search.includes("error=cannot-signin")) {
       setErrorMessage("Cannot sign in using Google");
       setOpenSnackBar(true);
-      console.log("Cannot sign in using Google");
     }
   }, [location]);
 
@@ -73,7 +71,13 @@ function LoginForm() {
         { withCredentials: true }
       );
       if (response.data.success) {
-        setAuthState({ isAuthenticated: true, user: response.data.user, loading: false });
+        setAuthState((prevState) => ({
+          ...prevState,
+          isAuthenticated: true,
+          user: response.data.user,
+          loading: false,
+          justLoggedIn: true,
+        }));
         navigate("/"); // Redirect to home page
       } else {
         setErrorMessage(response.data.error);
