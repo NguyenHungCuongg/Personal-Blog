@@ -1,6 +1,7 @@
 import express from "express";
 import passport from "../config/passport.js";
 import db from "../config/database.js";
+import bcrypt from "bcrypt";
 import { saltRounds } from "../config/constants.js";
 
 const router = express.Router();
@@ -40,6 +41,29 @@ router.post("/register", async (req, res) => {
     console.log("Error registering user:", err);
     return res.status(500).json({ success: false, error: "Internal Server Error" });
   }
+});
+
+//API đăng nhập bằng Google
+router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
+
+router.get("/auth/google/callback", (req, res, next) => {
+  passport.authenticate("google", (err, user, info) => {
+    if (err) {
+      return res.redirect("http://localhost:5173/login?error=cannot-signin");
+    }
+    if (!user) {
+      if (info && info.message === "Email already used") {
+        return res.redirect("http://localhost:5173/login?error=email-used");
+      }
+      return res.redirect("http://localhost:5173/login?error=cannot-signin");
+    }
+    req.login(user, (err) => {
+      if (err) {
+        return res.redirect("http://localhost:5173/login?error=cannot-signin");
+      }
+      return res.redirect("http://localhost:5173/");
+    });
+  })(req, res, next);
 });
 
 //API đăng nhập

@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import PasswordInputBar from "./PasswordInputBar";
@@ -11,6 +11,7 @@ import AuthContext from "../context/AuthContext";
 
 function LoginForm() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(true);
@@ -19,6 +20,29 @@ function LoginForm() {
   const [passwordError, setPasswordError] = useState(false);
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (location.search.includes("error=email-used")) {
+      setErrorMessage("Email has already been used");
+      setOpenSnackBar(true);
+      console.log("Email has already been used");
+    } else if (location.search.includes("error=cannot-signin")) {
+      setErrorMessage("Cannot sign in using Google");
+      setOpenSnackBar(true);
+      console.log("Cannot sign in using Google");
+    }
+  }, [location]);
+
+  const handleSubmitGoogleAuth = async (e) => {
+    e.preventDefault();
+    try {
+      window.location.href = "http://localhost:3000/api/auth/google";
+    } catch (err) {
+      console.log("Error logining user:", err);
+      setErrorMessage("An error occurred while signing up. Please try again.");
+      setOpenSnackBar(true);
+    }
+  };
 
   const handleSubmit = async (e) => {
     setEmailError(false);
@@ -98,6 +122,15 @@ function LoginForm() {
         <CheckboxWithLabel label="Remember me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
         <Button variant="contained" type="submit">
           Login
+        </Button>
+      </form>
+      <form
+        id="loginFormGoogle"
+        className="d-flex justify-content-between flex-column gap-4 mt-3"
+        onSubmit={handleSubmitGoogleAuth}
+      >
+        <Button className="btn btn-lg btn-google btn-block text-uppercase btn-outline border" type="submit">
+          <img src="https://img.icons8.com/color/16/000000/google-logo.png" /> Signup Using Google
         </Button>
       </form>
       <div className="d-flex flex-column py-3">

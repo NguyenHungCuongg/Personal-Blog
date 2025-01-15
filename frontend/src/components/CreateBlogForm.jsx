@@ -17,6 +17,7 @@ function CreateBlogForm() {
   const [topics, setTopics] = useState([]);
   const [content, setContent] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("Something went wrong. Please try again later.");
 
   const [titleError, setTitleError] = useState(false);
   const [topicsError, setTopicsError] = useState(false);
@@ -57,7 +58,8 @@ function CreateBlogForm() {
       if (uploadResponse?.fileUrl) {
         uploadedBannerImageUrl = uploadResponse.fileUrl; // Lưu giá trị trực tiếp vào biến tạm thời
       } else {
-        console.error("Failed to upload file");
+        setErrorMessage("An error occurred while uploading the banner image. Please try again.");
+        setOpenSnackbar(true);
         return;
       }
     }
@@ -96,7 +98,7 @@ function CreateBlogForm() {
         autoHideDuration={2000}
         onClose={handleCloseError}
       >
-        <Alert severity="error">Something went wrong. Please try again later.</Alert>
+        <Alert severity="error">{errorMessage}</Alert>
       </Snackbar>
       <form
         id="createBlogForm"

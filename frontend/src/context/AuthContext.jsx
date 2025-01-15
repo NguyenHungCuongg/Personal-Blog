@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get("http://localhost:3000", {
+        const response = await axios.get("http://localhost:3000/api/check-auth", {
           withCredentials: true,
         });
         setAuthState({

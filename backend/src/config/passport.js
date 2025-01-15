@@ -1,5 +1,6 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
+import GoogleStrategy from "passport-google-oauth20";
 import bcrypt from "bcrypt";
 import db from "./database.js";
 
@@ -50,6 +51,40 @@ passport.use(
       return done(err);
     }
   })
+);
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/api/auth/google/callback",
+    },
+    async function (accessToken, refreshToken, profile, done) {
+      try {
+        // Kiểm tra xem user đã tồn tại chưa
+        const result = await db.query("SELECT * FROM Users WHERE googleid = $1", [profile.id]);
+        let user = result.rows[0];
+        if (!user) {
+          //Kiểm tra xem email đã tồn tại chưa
+          const emailResult = await db.query("SELECT * FROM Users WHERE email = $1", [profile.emails[0].value]);
+          if (emailResult.rows.length > 0) {
+            return done(null, false, { message: "Email already used" });
+          }
+          // Nếu user chưa tồn tại, thêm user mới vào database
+          const insertResult = await db.query(
+            "INSERT INTO Users (googleid, email, username) VALUES ($1, $2, $3) RETURNING *",
+            [profile.id, profile.emails[0].value, profile.displayName]
+          );
+          user = insertResult.rows[0];
+        } else {
+          return done(null, user);
+        }
+      } catch (err) {
+        return done(err);
+      }
+    }
+  )
 );
 
 export default passport;

@@ -17,7 +17,7 @@ import IconButton from "@mui/material/IconButton";
 import PuffLoader from "react-spinners/PuffLoader";
 
 import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
+import MuiAlert from "@mui/material/Alert";
 
 import axios from "axios";
 import "./Navbar.css";
@@ -29,14 +29,20 @@ function Navbar() {
   const { isAuthenticated, user, loading, setAuthState } = React.useContext(AuthContext); //isAuthenticated, user, loading là ...authState (các giá trị của authState)
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  const [logoutError, setLogoutError] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState("success");
 
-  const handleCloseError = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+  React.useEffect(() => {
+    if (isAuthenticated && user) {
+      setSnackbarMessage("Login successful");
+      setSnackbarSeverity("success");
+      setOpenSnackbar(true);
+    } else if (!isAuthenticated) {
+      setSnackbarMessage("Logout successful");
+      setSnackbarSeverity("info");
+      setOpenSnackbar(true);
     }
-    setOpenSnackbar(false);
-  };
+  }, [isAuthenticated, user]);
 
   React.useEffect(() => {
     const currentPath = location.pathname; //Lấy đường dẫn hiện tại
@@ -61,17 +67,21 @@ function Navbar() {
   const handleCloseUserMenu = async () => {
     setAnchorElUser(null);
   };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   const handleLogout = async () => {
     try {
       const response = await axios.get("http://localhost:3000/api/logout", { withCredentials: true });
       if (response.data.success) {
         setAuthState({ isAuthenticated: false, user: null, loading: false });
-        setOpenSnackbar(true);
         navigate("/");
       }
     } catch (err) {
       setOpenSnackbar(true);
-      setLogoutError(true);
+      setSnackbarMessage("An error occurred while logging out. Please try again.");
       console.log("Error logging out user:", err);
     }
     setAnchorElUser(null);
@@ -106,15 +116,10 @@ function Navbar() {
       id="navBarContainer"
       className="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
     >
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={openSnackbar}
-        autoHideDuration={2000}
-        onClose={handleCloseError}
-      >
-        <Alert severity={logoutError ? `error` : `success`}>
-          {logoutError ? `Error logging out!` : `Logout successful!`}
-        </Alert>
+      <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
+        <MuiAlert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: "100%" }}>
+          {snackbarMessage}
+        </MuiAlert>
       </Snackbar>
       {isSmallScreen && (
         <Button onClick={handleClick} id="menuButton" variant="text">

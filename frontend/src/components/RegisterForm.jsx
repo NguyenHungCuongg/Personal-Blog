@@ -23,6 +23,17 @@ function RegisterForm() {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const handleSubmitGoogleAuth = async (e) => {
+    e.preventDefault();
+    try {
+      window.location.href = "http://localhost:3000/api/auth/google";
+    } catch (err) {
+      console.log("Error registering user:", err);
+      setErrorMessage("An error occurred while registering. Please try again.");
+      setOpenSnackBar(true);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -84,7 +95,7 @@ function RegisterForm() {
   return (
     <div className="container rounded-4 shadow p-5 px-5" style={{ maxWidth: "480px" }}>
       <GeneralSnackBar open={openSnackBar} errorMessage={errorMessage} onClose={() => setOpenSnackBar(false)} />
-      <form id="loginForm" className="d-flex justify-content-between flex-column gap-4" onSubmit={handleSubmit}>
+      <form id="registerForm" className="d-flex justify-content-between flex-column gap-4" onSubmit={handleSubmit}>
         <AccountCircleOutlinedIcon style={{ fontSize: "5rem", color: "var(--main-color)", margin: "auto" }} />
         <h3 className="fs-1 fw-bold text-center">Register</h3>
         <TextField
@@ -137,6 +148,15 @@ function RegisterForm() {
         <CheckboxWithLabel label="Remember me" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
         <Button variant="contained" type="submit">
           Register
+        </Button>
+      </form>
+      <form
+        id="registerFormGoogle"
+        className="d-flex justify-content-between flex-column gap-4 mt-3"
+        onSubmit={handleSubmitGoogleAuth}
+      >
+        <Button className="btn btn-lg btn-google btn-block text-uppercase btn-outline border" type="submit">
+          <img src="https://img.icons8.com/color/16/000000/google-logo.png" /> Signup Using Google
         </Button>
       </form>
       <div className="d-flex flex-column py-3">
